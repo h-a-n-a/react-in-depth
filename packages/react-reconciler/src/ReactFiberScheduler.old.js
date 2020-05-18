@@ -1051,9 +1051,15 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         // Do not append effects to parents if a sibling failed to complete
         (returnFiber.effectTag & Incomplete) === NoEffect
       ) {
+        // 处理当前 fiber 的子 effect 和父  effect 的合并（不处理自身）
+        // firstEffect 和 lastEffect 分别表示子树中的第一个 effect 和最后一个 effect
+        // 这里的 returnFiber.firstEffect 则表示 workInProgress 的第一个 effect
+
         // Append all the effects of the subtree and this fiber onto the effect
         // list of the parent. The completion order of the children affects the
         // side-effect order.
+        // 如果没有父级没有子 effect，就把当前级的子 effect 直接拿到父级作为父级 effect 的开始，
+        // 当父级和当前级都有子 effect，则把当前子树的 effect 接在父级的最后
         if (returnFiber.firstEffect === null) {
           returnFiber.firstEffect = workInProgress.firstEffect;
         }
@@ -1073,7 +1079,10 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         const effectTag = workInProgress.effectTag;
         // Skip both NoWork and PerformedWork tags when creating the effect list.
         // PerformedWork effect is read by React DevTools but shouldn't be committed.
+
+        // 如果当前有 effect 要处理，则把自己也放在 effect list 中
         if (effectTag > PerformedWork) {
+          // 把当前层自身接在父级后面，在这之前已经有子级的 effect，因此当前层的 effect 其实是接在当前层子 effect 的后面
           if (returnFiber.lastEffect !== null) {
             returnFiber.lastEffect.nextEffect = workInProgress;
           } else {
@@ -1087,6 +1096,8 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         ReactFiberInstrumentation.debugTool.onCompleteWork(workInProgress);
       }
 
+      // 有 sibling，则让 sibling 进入 beginWork
+      // 有 returnFiber 则让 returnFiber 继续调用 completeUnitOfWork（因为已经进入过 beginWork，就不需要再进一次了）
       if (siblingFiber !== null) {
         // If there is more work to do in this returnFiber, do that next.
         return siblingFiber;

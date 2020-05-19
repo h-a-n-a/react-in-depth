@@ -1003,6 +1003,7 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
     const returnFiber = workInProgress.return;
     const siblingFiber = workInProgress.sibling;
 
+    // workInProgress effect 已经 complete
     if ((workInProgress.effectTag & Incomplete) === NoEffect) {
       if (__DEV__ && replayFailedUnitOfWorkWithInvokeGuardedCallback) {
         // Don't replay if it fails during completion phase.
@@ -1010,6 +1011,7 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
       }
       // This fiber completed.
       // Remember we're completing this unit so we can find a boundary if it fails.
+      // 非 profiler 的情况下，只有 suspense 会返回 fiber，其他则只返回 null并处理当前 fiber
       nextUnitOfWork = workInProgress;
       if (enableProfilerTimer) {
         if (workInProgress.mode & ProfileMode) {

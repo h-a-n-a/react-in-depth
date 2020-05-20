@@ -113,7 +113,7 @@ import {
   commitResetTextContent,
 } from './ReactFiberCommitWork';
 import {enqueueUpdate} from './ReactUpdateQueue';
-// TODO: Ahaha Andrew is bad at spellling
+// REACT: Ahaha Andrew is bad at spellling
 import {resetContextDependences as resetContextDependencies} from './ReactFiberNewContext';
 import {resetHooks, ContextOnlyDispatcher} from './ReactFiberHooks';
 import {createCapturedValue} from './ReactCapturedValue';
@@ -266,12 +266,12 @@ export function computeExpirationForFiber(
       expirationTime = Sync;
       break;
     case UserBlockingPriority:
-      // TODO: Rename this to computeUserBlockingExpiration
+      // REACT: Rename this to computeUserBlockingExpiration
       expirationTime = computeInteractiveExpiration(currentTime);
       break;
     case NormalPriority:
-    case LowPriority: // TODO: Handle LowPriority
-      // TODO: Rename this to... something better.
+    case LowPriority: // REACT: Handle LowPriority
+      // REACT: Rename this to... something better.
       expirationTime = computeAsyncExpiration(currentTime);
       break;
     case IdlePriority:
@@ -344,7 +344,7 @@ export function scheduleUpdateOnFiber(
       }
     }
   } else {
-    // TODO: computeExpirationForFiber also reads the priority. Pass the
+    // REACT: computeExpirationForFiber also reads the priority. Pass the
     // priority as an argument to that function and this one.
     const priorityLevel = getCurrentPriorityLevel();
     if (priorityLevel === UserBlockingPriority) {
@@ -527,7 +527,7 @@ export function flushInteractiveUpdates() {
   if (workPhase === RenderPhase || workPhase === CommitPhase) {
     // Can't synchronously flush interactive updates if React is already
     // working. This is currently a no-op.
-    // TODO: Should we fire a warning? This happens if you synchronously invoke
+    // REACT: Should we fire a warning? This happens if you synchronously invoke
     // an input event inside an effect, like with `element.click()`.
     return;
   }
@@ -554,7 +554,7 @@ function resolveLocksOnRoot(root: FiberRoot, expirationTime: ExpirationTime) {
 }
 
 export function deferredUpdates<A>(fn: () => A): A {
-  // TODO: Remove in favor of Scheduler.next
+  // REACT: Remove in favor of Scheduler.next
   return runWithPriority(NormalPriority, fn);
 }
 
@@ -565,7 +565,7 @@ export function interactiveUpdates<A, B, C, R>(
   c: C,
 ): R {
   if (workPhase === NotWorking) {
-    // TODO: Remove this call. Instead of doing this automatically, the caller
+    // REACT: Remove this call. Instead of doing this automatically, the caller
     // should explicitly call flushInteractiveUpdates.
     flushPendingDiscreteUpdates();
   }
@@ -743,7 +743,7 @@ function renderRoot(
 
     startWorkLoopTimer(workInProgress);
 
-    // TODO: Fork renderRoot into renderRootSync and renderRootAsync
+    // REACT: Fork renderRoot into renderRootSync and renderRootAsync
     if (isSync) {
       if (expirationTime !== Sync) {
         // An async update expired. There may be other expired updates on
@@ -915,7 +915,7 @@ function renderRoot(
 export function renderDidSuspend(
   root: FiberRoot,
   absoluteTimeoutMs: number,
-  // TODO: Don't need this argument anymore
+  // REACT: Don't need this argument anymore
   suspendedTime: ExpirationTime,
 ) {
   if (
@@ -1084,7 +1084,7 @@ function completeUnitOfWork(unitOfWork: Fiber): Fiber | null {
         // back here again.
         // Since we're restarting, remove anything that is not a host effect
         // from the effect tag.
-        // TODO: The name stopFailedWorkTimer is misleading because Suspense
+        // REACT: The name stopFailedWorkTimer is misleading because Suspense
         // also captures and restarts.
         stopFailedWorkTimer(workInProgress);
         next.effectTag &= HostEffectMask;
@@ -1383,7 +1383,7 @@ function commitRootImpl(root, expirationTime) {
     root.current = finishedWork;
     // Measure these anyway so the flamegraph explicitly shows that there were
     // no effects.
-    // TODO: Maybe there's a better way to report this.
+    // REACT: Maybe there's a better way to report this.
     startCommitSnapshotEffectsTimer();
     stopCommitSnapshotEffectsTimer();
     if (enableProfilerTimer) {
@@ -1478,7 +1478,7 @@ function commitBeforeMutationEffects() {
 }
 
 function commitMutationEffects() {
-  // TODO: Should probably move the bulk of this function to commitWork.
+  // REACT: Should probably move the bulk of this function to commitWork.
   while (nextEffect !== null) {
     setCurrentDebugFiberInDEV(nextEffect);
 
@@ -1505,7 +1505,7 @@ function commitMutationEffects() {
         commitPlacement(nextEffect);
         // Clear the "placement" from effect tag so that we know that this is
         // inserted, before any life-cycles like componentDidMount gets called.
-        // TODO: findDOMNode doesn't rely on this any more but isMounted does
+        // REACT: findDOMNode doesn't rely on this any more but isMounted does
         // and isMounted is deprecated anyway so we should be able to kill this.
         nextEffect.effectTag &= ~Placement;
         break;
@@ -1533,7 +1533,7 @@ function commitMutationEffects() {
       }
     }
 
-    // TODO: Only record a mutation effect if primaryEffectTag is non-zero.
+    // REACT: Only record a mutation effect if primaryEffectTag is non-zero.
     recordEffect();
 
     resetCurrentDebugFiberInDEV();
@@ -1545,7 +1545,7 @@ function commitLayoutEffects(
   root: FiberRoot,
   committedExpirationTime: ExpirationTime,
 ) {
-  // TODO: Should probably move the bulk of this function to commitWork.
+  // REACT: Should probably move the bulk of this function to commitWork.
   while (nextEffect !== null) {
     setCurrentDebugFiberInDEV(nextEffect);
 
@@ -1701,7 +1701,7 @@ export function captureCommitPhaseError(sourceFiber: Fiber, error: mixed) {
         const update = createClassErrorUpdate(
           fiber,
           errorInfo,
-          // TODO: This is always sync
+          // REACT: This is always sync
           Sync,
         );
         enqueueUpdate(fiber, update);
@@ -1766,7 +1766,7 @@ export function retryTimedOutBoundary(boundaryFiber: Fiber) {
   // rendering again, at a new expiration time.
   const currentTime = requestCurrentTime();
   const retryTime = computeExpirationForFiber(currentTime, boundaryFiber);
-  // TODO: Special case idle priority?
+  // REACT: Special case idle priority?
   const priorityLevel = inferPriorityFromExpirationTime(currentTime, retryTime);
   const root = markUpdateTimeFromFiberToRoot(boundaryFiber, retryTime);
   if (root !== null) {
@@ -1811,7 +1811,7 @@ export function inferStartTimeFromExpirationTime(
   // We don't know exactly when the update was scheduled, but we can infer an
   // approximate start time from the expiration time.
   const earliestExpirationTimeMs = expirationTimeToMs(root.firstPendingTime);
-  // TODO: Track this on the root instead. It's more accurate, doesn't rely on
+  // REACT: Track this on the root instead. It's more accurate, doesn't rely on
   // assumptions about priority, and isn't coupled to Scheduler details.
   return earliestExpirationTimeMs - LOW_PRIORITY_EXPIRATION;
 }
@@ -1883,7 +1883,7 @@ function stopFinishedWorkLoopTimer() {
 }
 
 function stopInterruptedWorkLoopTimer() {
-  // TODO: Track which fiber caused the interruption.
+  // REACT: Track which fiber caused the interruption.
   const didCompleteRoot = false;
   stopWorkLoopTimer(interruptedBy, didCompleteRoot);
   interruptedBy = null;

@@ -50,7 +50,7 @@ function isFiberMountedImpl(fiber: Fiber): number {
     }
   }
   if (node.tag === HostRoot) {
-    // TODO: Check if this was a nested HostRoot when used with
+    // REACT: Check if this was a nested HostRoot when used with
     // renderContainerIntoSubtree.
     return MOUNTED;
   }

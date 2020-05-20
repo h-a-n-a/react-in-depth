@@ -118,7 +118,7 @@ describe('ReactIncremental', () => {
     );
     expect(Scheduler).toFlushWithoutYielding();
 
-    // TODO: Test bail out of host components. This is currently unobservable.
+    // REACT: Test bail out of host components. This is currently unobservable.
 
     // Since this is an update, it should bail out and reuse the work from
     // Header and Content.
@@ -1630,7 +1630,7 @@ describe('ReactIncremental', () => {
       'componentDidUpdate:3-2',
     ]);
 
-    // TODO: Test that we get the expected values for the same scenario with
+    // REACT: Test that we get the expected values for the same scenario with
     // incomplete parents.
   });
 
@@ -2289,7 +2289,7 @@ describe('ReactIncremental', () => {
       // its child context.
       'Intl:read {}',
       'Intl:provide {"locale":"gr"}',
-      // TODO: it's unfortunate that we can't reuse work on
+      // REACT: it's unfortunate that we can't reuse work on
       // these components even though they don't depend on context.
       'IndirectionFn {}',
       'IndirectionClass {}',

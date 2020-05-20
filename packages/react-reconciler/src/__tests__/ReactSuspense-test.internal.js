@@ -171,7 +171,7 @@ describe('ReactSuspense', () => {
     // switches back to the normal view. The second Suspense should still
     // show the placeholder
     jest.advanceTimersByTime(1000);
-    // TODO: Should we throw if you forget to call toHaveYielded?
+    // REACT: Should we throw if you forget to call toHaveYielded?
     expect(Scheduler).toHaveYielded(['Promise resolved [A]']);
     expect(Scheduler).toFlushAndYield(['A']);
     expect(root).toMatchRenderedOutput('ALoading B...');

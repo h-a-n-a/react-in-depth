@@ -57,7 +57,7 @@ type BookKeepingInstance = {
  * other). If React trees are not nested, returns null.
  */
 function findRootContainerNode(inst) {
-  // TODO: It may be a good idea to cache this to prevent unnecessary DOM
+  // REACT: It may be a good idea to cache this to prevent unnecessary DOM
   // traversal, but caching is difficult to do correctly without using a
   // mutation observer to listen for all DOM changes.
   while (inst.return) {
@@ -156,7 +156,7 @@ function handleTopLevel(bookKeeping: BookKeepingInstance) {
   }
 }
 
-// TODO: can we stop exporting these?
+// REACT: can we stop exporting these?
 export let _enabled = true;
 
 export function setEnabled(enabled: ?boolean) {

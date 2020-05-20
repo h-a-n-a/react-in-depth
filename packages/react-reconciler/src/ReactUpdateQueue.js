@@ -178,7 +178,7 @@ function cloneUpdateQueue<State>(
     firstUpdate: currentQueue.firstUpdate,
     lastUpdate: currentQueue.lastUpdate,
 
-    // TODO: With resuming, if we bail out and resuse the child tree, we should
+    // REACT: With resuming, if we bail out and resuse the child tree, we should
     // keep these effects.
     firstCapturedUpdate: null,
     lastCapturedUpdate: null,
@@ -315,7 +315,7 @@ export function enqueueCapturedUpdate<State>(
       workInProgress.memoizedState,
     );
   } else {
-    // TODO: I put this here rather than createWorkInProgress so that we don't
+    // REACT: I put this here rather than createWorkInProgress so that we don't
     // clone the queue unnecessarily. There's probably a better way to
     // structure this.
     workInProgressQueue = ensureWorkInProgressQueueIsAClone(

@@ -418,7 +418,7 @@ describe('Event responder: Press', () => {
     });
 
     // No PointerEvent fallbacks
-    // TODO: jsdom missing APIs
+    // REACT: jsdom missing APIs
     // it('is called after "touchend" event', () => {
     // ref.current.dispatchEvent(createPointerEvent('touchstart'));
     // ref.current.dispatchEvent(createPointerEvent('touchend'));

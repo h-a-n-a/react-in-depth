@@ -56,7 +56,7 @@ describe('ReactBrowserEventEmitter', () => {
     jest.resetModules();
     LISTENER.mockClear();
 
-    // TODO: can we express this test with only public API?
+    // REACT: can we express this test with only public API?
     EventPluginHub = require('events/EventPluginHub');
     EventPluginRegistry = require('events/EventPluginRegistry');
     React = require('react');

@@ -310,7 +310,7 @@ if (__DEV__ && replayFailedUnitOfWorkWithInvokeGuardedCallback) {
       typeof thrownValue.then === 'function'
     ) {
       // Don't replay promises. Treat everything else like an error.
-      // TODO: Need to figure out a different strategy if/when we add
+      // REACT: Need to figure out a different strategy if/when we add
       // support for catching other types.
       return;
     }
@@ -442,7 +442,7 @@ function commitAllHostEffects() {
         commitPlacement(nextEffect);
         // Clear the "placement" from effect tag so that we know that this is inserted, before
         // any life-cycles like componentDidMount gets called.
-        // TODO: findDOMNode doesn't rely on this any more but isMounted
+        // REACT: findDOMNode doesn't rely on this any more but isMounted
         // does and isMounted is deprecated anyway so we should be able
         // to kill this.
         nextEffect.effectTag &= ~Placement;
@@ -832,7 +832,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     // we enter rootWithPendingPassiveEffects commit phase before then.
     let callback = commitPassiveEffects.bind(null, root, firstEffect);
     if (enableSchedulerTracing) {
-      // TODO: Avoid this extra callback by mutating the tracing ref directly,
+      // REACT: Avoid this extra callback by mutating the tracing ref directly,
       // like we do at the beginning of commitRoot. I've opted not to do that
       // here because that code is still in flux.
       callback = Scheduler_tracing_wrap(callback);
@@ -1011,7 +1011,7 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
       }
       // This fiber completed.
       // Remember we're completing this unit so we can find a boundary if it fails.
-      // 非 profiler 的情况下，只有 suspense 会返回 fiber，其他则只返回 null并处理当前 fiber
+      // 非 profiler 的情况下，completeWork 中只有 suspense 会返回 fiber，其他则只返回 null并处理当前 fiber
       nextUnitOfWork = workInProgress;
       if (enableProfilerTimer) {
         if (workInProgress.mode & ProfileMode) {
@@ -1399,7 +1399,7 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
           }
         }
 
-        // TODO: we already know this isn't true in some cases.
+        // REACT: we already know this isn't true in some cases.
         // At least this shows a nicer error message until we figure out the cause.
         // https://github.com/facebook/react/issues/12449#issuecomment-386727431
         invariant(
@@ -1558,7 +1558,7 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
     let msUntilTimeout = nextLatestAbsoluteTimeoutMs - currentTimeMs;
     msUntilTimeout = msUntilTimeout < 0 ? 0 : msUntilTimeout;
 
-    // TODO: Account for the Just Noticeable Difference
+    // REACT: Account for the Just Noticeable Difference
 
     const rootExpirationTime = root.expirationTime;
     onSuspend(
@@ -2044,7 +2044,7 @@ function syncUpdates<A, B, C0, D, R>(
   }
 }
 
-// TODO: Everything below this is written as if it has been lifted to the
+// REACT: Everything below this is written as if it has been lifted to the
 // renderers. I'll do this in a follow-up.
 
 // Linked-list of roots
@@ -2261,7 +2261,7 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime) {
     return;
   }
 
-  // TODO: Get rid of Sync and use current time?
+  // REACT: Get rid of Sync and use current time?
   // 判断优先级是同步还是异步，异步的话需要调度
   if (expirationTime === Sync) {
     performSyncWork();
@@ -2313,7 +2313,7 @@ function findHighestPriorityRoot() {
       if (remainingExpirationTime === NoWork) {
         // This root no longer has work. Remove it from the scheduler.
 
-        // TODO: This check is redudant, but Flow is confused by the branch
+        // REACT: This check is redudant, but Flow is confused by the branch
         // below where we set lastScheduledRoot to null, even though we break
         // from the loop right after.
         invariant(
@@ -2546,7 +2546,7 @@ function performWorkOnRoot(
   if (!isYieldy) {
     // 不可打断任务
     // Flush work without yielding.
-    // TODO: Non-yieldy work does not necessarily imply expired work. A renderer
+    // REACT: Non-yieldy work does not necessarily imply expired work. A renderer
     // may want to perform some work without yielding, but also without
     // requiring the root to complete (by triggering placeholders).
     // 判断是否存在已完成的 finishedWork，存在话就完成它
@@ -2663,7 +2663,7 @@ function onUncaughtError(error: mixed) {
   }
 }
 
-// TODO: Batching should be implemented at the renderer level, not inside
+// REACT: Batching should be implemented at the renderer level, not inside
 // the reconciler.
 function batchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   const previousIsBatchingUpdates = isBatchingUpdates;
@@ -2678,7 +2678,7 @@ function batchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   }
 }
 
-// TODO: Batching should be implemented at the renderer level, not inside
+// REACT: Batching should be implemented at the renderer level, not inside
 // the reconciler.
 function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   if (isBatchingUpdates && !isUnbatchingUpdates) {
@@ -2692,7 +2692,7 @@ function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   return fn(a);
 }
 
-// TODO: Batching should be implemented at the renderer level, not within
+// REACT: Batching should be implemented at the renderer level, not within
 // the reconciler.
 function flushSync<A, R>(fn: (a: A) => R, a: A): R {
   invariant(

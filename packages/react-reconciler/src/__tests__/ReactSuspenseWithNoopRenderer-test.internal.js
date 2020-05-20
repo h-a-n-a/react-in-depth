@@ -728,7 +728,7 @@ describe('ReactSuspenseWithNoopRenderer', () => {
     expect(ReactNoop.getChildren()).toEqual([span('Async')]);
   });
 
-  // TODO: This cannot be tested until we have a way to long-suspend navigations.
+  // REACT: This cannot be tested until we have a way to long-suspend navigations.
   it.skip('starts working on an update even if its priority falls between two suspended levels', async () => {
     function App(props) {
       return (
@@ -1670,7 +1670,7 @@ describe('ReactSuspenseWithNoopRenderer', () => {
   });
 });
 
-// TODO:
+// REACT:
 // An update suspends, timeout is scheduled. Update again with different timeout.
 // An update suspends, a higher priority update also suspends, each has different timeouts.
 // Can update siblings of a timed out placeholder without suspending

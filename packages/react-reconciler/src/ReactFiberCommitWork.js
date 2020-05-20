@@ -247,7 +247,7 @@ function commitBeforeMutationLifeCycles(
           const instance = finishedWork.stateNode;
           // We could update instance props and state here,
           // but instead we rely on them being set during last render.
-          // TODO: revisit this when we implement resuming.
+          // REACT: revisit this when we implement resuming.
           if (__DEV__) {
             if (
               finishedWork.type === finishedWork.elementType &&
@@ -406,7 +406,7 @@ function commitLifeCycles(
           startPhaseTimer(finishedWork, 'componentDidMount');
           // We could update instance props and state here,
           // but instead we rely on them being set during last render.
-          // TODO: revisit this when we implement resuming.
+          // REACT: revisit this when we implement resuming.
           if (__DEV__) {
             if (
               finishedWork.type === finishedWork.elementType &&
@@ -443,7 +443,7 @@ function commitLifeCycles(
           startPhaseTimer(finishedWork, 'componentDidUpdate');
           // We could update instance props and state here,
           // but instead we rely on them being set during last render.
-          // TODO: revisit this when we implement resuming.
+          // REACT: revisit this when we implement resuming.
           if (__DEV__) {
             if (
               finishedWork.type === finishedWork.elementType &&
@@ -506,7 +506,7 @@ function commitLifeCycles(
         }
         // We could update instance props and state here,
         // but instead we rely on them being set during last render.
-        // TODO: revisit this when we implement resuming.
+        // REACT: revisit this when we implement resuming.
         commitUpdateQueue(
           finishedWork,
           updateQueue,
@@ -737,7 +737,7 @@ function commitUnmount(current: Fiber): void {
       return;
     }
     case HostPortal: {
-      // TODO: this is recursive.
+      // REACT: this is recursive.
       // We are also not using this parent because
       // the portal will get pushed immediately.
       if (supportsMutation) {
@@ -884,7 +884,7 @@ function getHostSibling(fiber: Fiber): ?Instance {
   // We're going to search forward into the tree until we find a sibling host
   // node. Unfortunately, if multiple insertions are done in a row we have to
   // search past them. This leads to exponential search for the next sibling.
-  // TODO: Find a more efficient way to do this.
+  // REACT: Find a more efficient way to do this.
   let node: Fiber = fiber;
   siblings: while (true) {
     // If we didn't find anything, let's try the next sibling.
@@ -1180,7 +1180,7 @@ function commitWork(current: Fiber | null, finishedWork: Fiber): void {
         // this case.
         const oldProps = current !== null ? current.memoizedProps : newProps;
         const type = finishedWork.type;
-        // TODO: Type the updateQueue to be specific to host components.
+        // REACT: Type the updateQueue to be specific to host components.
         const updatePayload: null | UpdatePayload = (finishedWork.updateQueue: any);
         finishedWork.updateQueue = null;
         if (updatePayload !== null) {

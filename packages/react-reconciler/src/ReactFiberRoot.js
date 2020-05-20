@@ -22,7 +22,7 @@ import {
 } from 'shared/ReactFeatureFlags';
 import {unstable_getThreadID} from 'scheduler/tracing';
 
-// TODO: This should be lifted into the renderer.
+// REACT: This should be lifted into the renderer.
 export type Batch = {
   _defer: boolean,
   _expirationTime: ExpirationTime,
@@ -84,14 +84,14 @@ type BaseFiberRootProperties = {|
   // 这个属性说过好几次了
   +hydrate: boolean,
   // Remaining expiration time on this root.
-  // TODO: Lift this into the renderer
+  // REACT: Lift this into the renderer
   // root 的剩余停止时间
   nextExpirationTimeToWorkOn: ExpirationTime,
   // 过期时间
   expirationTime: ExpirationTime,
   // List of top-level batches. This list indicates whether a commit should be
   // deferred. Also contains completion callbacks.
-  // TODO: Lift this into the renderer
+  // REACT: Lift this into the renderer
   firstBatch: Batch | null,
   // Linked-list of roots
   // root 的链表

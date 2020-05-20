@@ -52,7 +52,7 @@ function escape(key) {
 }
 
 /**
- * TODO: Test that a single child and an array with one item have the same key
+ * REACT: Test that a single child and an array with one item have the same key
  * pattern.
  */
 

@@ -7,7 +7,7 @@
 
 import invariant from 'shared/invariant';
 import warning from 'shared/warning';
-// TODO: We can remove this if we add invariantWithStack()
+// REACT: We can remove this if we add invariantWithStack()
 // or add stack by default to invariants where possible.
 import ReactSharedInternals from 'shared/ReactSharedInternals';
 

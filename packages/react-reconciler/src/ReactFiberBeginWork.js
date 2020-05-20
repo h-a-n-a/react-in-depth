@@ -245,7 +245,7 @@ function updateForwardRef(
   nextProps: any,
   renderExpirationTime: ExpirationTime,
 ) {
-  // TODO: current can be non-null here even if the component
+  // REACT: current can be non-null here even if the component
   // hasn't yet mounted. This happens after the first render suspends.
   // We'll need to figure out if this is fine or can cause issues.
 
@@ -444,7 +444,7 @@ function updateSimpleMemoComponent(
   updateExpirationTime,
   renderExpirationTime: ExpirationTime,
 ): null | Fiber {
-  // TODO: current can be non-null here even if the component
+  // REACT: current can be non-null here even if the component
   // hasn't yet mounted. This happens when the inner render suspends.
   // We'll need to figure out if this is fine or can cause issues.
 
@@ -794,7 +794,7 @@ function finishClassComponent(
     // unmount all the children. componentDidCatch will schedule an update to
     // re-render a fallback. This is temporary until we migrate everyone to
     // the new API.
-    // TODO: Warn in a future release.
+    // REACT: Warn in a future release.
     nextChildren = null;
 
     if (enableProfilerTimer) {
@@ -841,7 +841,7 @@ function finishClassComponent(
   }
 
   // Memoize state using the values we just used to render.
-  // TODO: Restructure so we never read values from the instance.
+  // REACT: Restructure so we never read values from the instance.
   workInProgress.memoizedState = instance.state;
 
   // The context might have changed so we need to recalculate it.
@@ -914,7 +914,7 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
     // This is a bit of a hack. We track the host root as a placement to
     // know that we're currently in a mounting state. That way isMounted
     // works as expected. We must reset this before committing.
-    // TODO: Delete this when we delete isMounted and findDOMNode.
+    // REACT: Delete this when we delete isMounted and findDOMNode.
     workInProgress.effectTag |= Placement;
 
     // Ensure that children mount into this root without tracking
@@ -1608,7 +1608,7 @@ function updateSuspenseComponent(
         // If this render doesn't suspend, we need to delete the fallback
         // children. Wait until the complete phase, after we've confirmed the
         // fallback is no longer needed.
-        // TODO: Would it be better to store the fallback fragment on
+        // REACT: Would it be better to store the fallback fragment on
         // the stateNode?
 
         // Continue rendering the children, like we normally do.
@@ -1764,7 +1764,7 @@ function updateDehydratedSuspenseComponent(
   }
   if ((workInProgress.effectTag & DidCapture) !== NoEffect) {
     // Something suspended. Leave the existing children in place.
-    // TODO: In non-concurrent mode, should we commit the nodes we have hydrated so far?
+    // REACT: In non-concurrent mode, should we commit the nodes we have hydrated so far?
     workInProgress.child = null;
     return null;
   }
@@ -1839,7 +1839,7 @@ function updatePortalComponent(
     // but at commit. Therefore we need to track insertions which the normal
     // flow doesn't do during mount. This doesn't happen at the root because
     // the root always starts with a "current" with a null child.
-    // TODO: Consider unifying this with how the root works.
+    // REACT: Consider unifying this with how the root works.
     workInProgress.child = reconcileChildFibers(
       workInProgress,
       null,
@@ -2054,7 +2054,7 @@ function bailoutOnAlreadyFinishedWork(
   const childExpirationTime = workInProgress.childExpirationTime;
   if (childExpirationTime < renderExpirationTime) {
     // The children don't have any work either. We can skip them.
-    // TODO: Once we add back resuming, we should check if the children are
+    // REACT: Once we add back resuming, we should check if the children are
     // a work-in-progress set. If so, we need to transfer their effects.
     return null;
   } else {
@@ -2248,6 +2248,7 @@ function beginWork(
     case HostRoot:
       return updateHostRoot(current, workInProgress, renderExpirationTime);
     case HostComponent:
+      // TODO: beginWork 和 completeWork 中 都调用了 updateHostComponent，观察他们的区别
       return updateHostComponent(current, workInProgress, renderExpirationTime);
     case HostText:
       return updateHostText(current, workInProgress);

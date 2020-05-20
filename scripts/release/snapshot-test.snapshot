@@ -74,7 +74,7 @@ Index: build/node_modules/react/umd/react.development.js
 @@ -16,9 +16,9 @@
  }(this, (function () { 'use strict';
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -133,7 +133,7 @@ Index: build/node_modules/react/cjs/react.development.js
 @@ -19,9 +19,9 @@
  var checkPropTypes = require('prop-types/checkPropTypes');
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -155,7 +155,7 @@ Index: build/node_modules/react-art/umd/react-art.development.js
 @@ -20,9 +20,9 @@
  var _assign = ReactInternals.assign;
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -195,7 +195,7 @@ Index: build/node_modules/react-art/cjs/react-art.development.js
 @@ -25,9 +25,9 @@
  var FastNoSideEffects = require('art/modes/fast-noSideEffects');
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -247,7 +247,7 @@ Index: build/node_modules/react-dom/umd/react-dom-server.browser.development.js
 @@ -61,9 +61,9 @@
  // preserve the format and params in the www builds.
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -328,12 +328,12 @@ Index: build/node_modules/react-dom/umd/react-dom.development.js
 @@ -19471,9 +19471,9 @@
  }
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
  
- // TODO: This type is shared between the reconciler and ReactDOM, but will
+ // REACT: This type is shared between the reconciler and ReactDOM, but will
  // eventually be lifted out to the renderer.
  var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
 Index: build/node_modules/react-dom/umd/react-dom-server.browser.production.min.js
@@ -408,7 +408,7 @@ Index: build/node_modules/react-dom/cjs/react-dom-server.browser.development.js
 @@ -65,9 +65,9 @@
  // preserve the format and params in the www builds.
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -468,7 +468,7 @@ Index: build/node_modules/react-dom/cjs/react-dom-server.node.development.js
 @@ -21,9 +21,9 @@
  var stream = require('stream');
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -512,12 +512,12 @@ Index: build/node_modules/react-dom/cjs/react-dom.development.js
 @@ -19347,9 +19347,9 @@
  }
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
  
- // TODO: This type is shared between the reconciler and ReactDOM, but will
+ // REACT: This type is shared between the reconciler and ReactDOM, but will
  // eventually be lifted out to the renderer.
  var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
 Index: build/node_modules/react-dom/cjs/react-dom-server.browser.production.min.js
@@ -695,7 +695,7 @@ Index: build/node_modules/react-test-renderer/umd/react-test-renderer.developmen
 @@ -11622,9 +11622,9 @@
  }
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';
@@ -757,7 +757,7 @@ Index: build/node_modules/react-test-renderer/cjs/react-test-renderer.developmen
 @@ -11498,9 +11498,9 @@
  }
  
- // TODO: this is special because it gets imported during build.
+ // REACT: this is special because it gets imported during build.
  
 -var ReactVersion = '16.6.1-canary-b3d1a81a9';
 +var ReactVersion = '1.2.3';

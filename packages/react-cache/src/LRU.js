@@ -129,7 +129,7 @@ export function createLRU<T>(limit: number) {
       }
     } else {
       // Cannot access a deleted entry
-      // TODO: Error? Warning?
+      // REACT: Error? Warning?
     }
     scheduleCleanUp();
     return entry.value;

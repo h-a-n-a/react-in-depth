@@ -121,7 +121,7 @@ function createClassErrorUpdate(
         // To preserve the preexisting retry behavior of error boundaries,
         // we keep track of which ones already failed during this batch.
         // This gets reset before we yield back to the browser.
-        // TODO: Warn in strict mode if getDerivedStateFromError is
+        // REACT: Warn in strict mode if getDerivedStateFromError is
         // not defined.
         markLegacyErrorBoundaryAsFailed(this);
       }
@@ -373,7 +373,7 @@ function throwException(
       workInProgress = workInProgress.return;
     } while (workInProgress !== null);
     // No boundary was found. Fallthrough to error mode.
-    // TODO: Use invariant so the message is stripped in prod?
+    // REACT: Use invariant so the message is stripped in prod?
     value = new Error(
       (getComponentName(sourceFiber.type) || 'A React component') +
         ' suspended while rendering, but no fallback UI was specified.\n' +
@@ -465,7 +465,7 @@ function unwindWork(
       return workInProgress;
     }
     case HostComponent: {
-      // TODO: popHydrationState
+      // REACT: popHydrationState
       popHostContext(workInProgress);
       return null;
     }
@@ -480,7 +480,7 @@ function unwindWork(
     }
     case DehydratedSuspenseComponent: {
       if (enableSuspenseServerRenderer) {
-        // TODO: popHydrationState
+        // REACT: popHydrationState
         const effectTag = workInProgress.effectTag;
         if (effectTag & ShouldCapture) {
           workInProgress.effectTag = (effectTag & ~ShouldCapture) | DidCapture;

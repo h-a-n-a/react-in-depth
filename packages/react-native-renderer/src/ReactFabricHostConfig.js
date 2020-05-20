@@ -70,7 +70,7 @@ export type UpdatePayload = Object;
 export type TimeoutHandle = TimeoutID;
 export type NoTimeout = -1;
 
-// TODO: Remove this conditional once all changes have propagated.
+// REACT: Remove this conditional once all changes have propagated.
 if (registerEventHandler) {
   /**
    * Register the event emitter with the native bridge
@@ -286,7 +286,7 @@ export function getChildHostContext(
 export function getChildHostContextForEventComponent(
   parentHostContext: HostContext,
 ) {
-  // TODO: add getChildHostContextForEventComponent implementation
+  // REACT: add getChildHostContextForEventComponent implementation
   return parentHostContext;
 }
 
@@ -294,7 +294,7 @@ export function getChildHostContextForEventTarget(
   parentHostContext: HostContext,
   type: Symbol | number,
 ) {
-  // TODO: add getChildHostContextForEventTarget implementation
+  // REACT: add getChildHostContextForEventTarget implementation
   return parentHostContext;
 }
 
@@ -316,7 +316,7 @@ export function prepareUpdate(
 ): null | Object {
   const viewConfig = instance.canonical.viewConfig;
   const updatePayload = diff(oldProps, newProps, viewConfig.validAttributes);
-  // TODO: If the event handlers have changed, we need to update the current props
+  // REACT: If the event handlers have changed, we need to update the current props
   // in the commit phase but there is no host config hook to do it yet.
   // So instead we hack it by updating it in the render phase.
   instance.canonical.currentProps = newProps;

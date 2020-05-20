@@ -930,7 +930,7 @@ describe('Profiler', () => {
           // And does not include the original (interrupted) 10ms.
           // The tree contains 42ms of base render time at this point,
           // Reflecting the most recent (longer) render durations.
-          // TODO: This actual time should decrease by 10ms once the scheduler supports resuming.
+          // REACT: This actual time should decrease by 10ms once the scheduler supports resuming.
           expect(Scheduler).toFlushAndYield(['FirstComponent:10', 'Yield:4']);
           expect(callback).toHaveBeenCalledTimes(1);
           call = callback.mock.calls[0];

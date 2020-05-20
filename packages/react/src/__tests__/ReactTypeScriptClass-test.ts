@@ -40,7 +40,7 @@ function test(element, expectedTag, expectedClassName) {
 
 // Classes need to be declared at the top level scope, so we declare all the
 // classes that will be used by the tests below, instead of inlining them.
-// TODO: Consider redesigning this using modules so that we can use non-unique
+// REACT: Consider redesigning this using modules so that we can use non-unique
 // names of classes and bundle them with the test code.
 
 // it preserves the name of the class for use in error messages

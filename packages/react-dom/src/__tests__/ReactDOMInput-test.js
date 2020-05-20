@@ -1732,7 +1732,7 @@ describe('ReactDOMInput', () => {
       node.focus();
       setUntrackedValue.call(node, '2');
       dispatchEventOnNode(node, 'input');
-      // TODO: it is unclear why blur must be triggered twice,
+      // REACT: it is unclear why blur must be triggered twice,
       // manual testing in the fixtures shows that the active element
       // is no longer the input, however blur() + a blur event seem to
       // be the only way to remove focus in JSDOM
@@ -1757,7 +1757,7 @@ describe('ReactDOMInput', () => {
       node.focus();
       setUntrackedValue.call(node, 4);
       dispatchEventOnNode(node, 'input');
-      // TODO: it is unclear why blur must be triggered twice,
+      // REACT: it is unclear why blur must be triggered twice,
       // manual testing in the fixtures shows that the active element
       // is no longer the input, however blur() + a blur event seem to
       // be the only way to remove focus in JSDOM
@@ -1776,7 +1776,7 @@ describe('ReactDOMInput', () => {
       node.focus();
       setUntrackedValue.call(node, 4);
       dispatchEventOnNode(node, 'input');
-      // TODO: it is unclear why blur must be triggered twice,
+      // REACT: it is unclear why blur must be triggered twice,
       // manual testing in the fixtures shows that the active element
       // is no longer the input, however blur() + a blur event seem to
       // be the only way to remove focus in JSDOM
@@ -1933,7 +1933,7 @@ describe('ReactDOMInput', () => {
 
       expect(node.value).toBe('');
       expect(node.getAttribute('value')).toBe('');
-      // TODO: we should warn here.
+      // REACT: we should warn here.
     });
 
     it('treats updated Symbol defaultValue as an empty string', function() {
@@ -1947,7 +1947,7 @@ describe('ReactDOMInput', () => {
         expect(node.value).toBe('foo');
       }
       expect(node.getAttribute('value')).toBe('');
-      // TODO: we should warn here.
+      // REACT: we should warn here.
     });
   });
 
@@ -1993,7 +1993,7 @@ describe('ReactDOMInput', () => {
 
       expect(node.value).toBe('');
       expect(node.getAttribute('value')).toBe('');
-      // TODO: we should warn here.
+      // REACT: we should warn here.
     });
 
     it('treats updated function defaultValue as an empty string', function() {
@@ -2008,7 +2008,7 @@ describe('ReactDOMInput', () => {
         expect(node.value).toBe('foo');
         expect(node.getAttribute('value')).toBe('');
       }
-      // TODO: we should warn here.
+      // REACT: we should warn here.
     });
   });
 

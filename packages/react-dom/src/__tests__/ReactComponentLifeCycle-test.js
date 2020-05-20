@@ -79,7 +79,7 @@ function getLifeCycleState(instance): ComponentLifeCycle {
 }
 
 /**
- * TODO: We should make any setState calls fail in
+ * REACT: We should make any setState calls fail in
  * `getInitialState` and `componentWillMount`. They will usually fail
  * anyways because `this._renderedComponent` is empty, however, if a component
  * is *reused*, then that won't be the case and things will appear to work in

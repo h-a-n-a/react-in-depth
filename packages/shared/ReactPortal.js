@@ -14,7 +14,7 @@ import type {ReactNodeList, ReactPortal} from 'shared/ReactTypes';
 export function createPortal(
   children: ReactNodeList,
   containerInfo: any,
-  // TODO: figure out the API for cross-renderer implementation.
+  // REACT: figure out the API for cross-renderer implementation.
   implementation: any,
   key: ?string = null,
 ): ReactPortal {

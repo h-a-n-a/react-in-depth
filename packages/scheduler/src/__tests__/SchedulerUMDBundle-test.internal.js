@@ -30,7 +30,7 @@ describe('Scheduling UMD bundle', () => {
     switch (name) {
       case '__interactionsRef':
       case '__subscriberRef':
-        // Don't forward these. (TODO: why?)
+        // Don't forward these. (REACT: why?)
         return false;
       default:
         return true;

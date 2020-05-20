@@ -8,7 +8,7 @@
 'use strict';
 
 // Mock of the Native Hooks
-// TODO: Should this move into the components themselves? E.g. focusable
+// REACT: Should this move into the components themselves? E.g. focusable
 
 const TextInputState = {};
 

@@ -246,7 +246,7 @@ describe('ReactDOMFiber', () => {
     expect(container.innerHTML).toBe('');
   });
 
-  // TODO: remove in React 17
+  // REACT: remove in React 17
   it('should support unstable_createPortal alias', () => {
     const portalContainer = document.createElement('div');
 

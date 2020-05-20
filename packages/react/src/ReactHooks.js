@@ -47,7 +47,7 @@ export function useContext<T>(
         : '',
     );
 
-    // TODO: add a more generic warning for invalid values.
+    // REACT: add a more generic warning for invalid values.
     if ((Context: any)._context !== undefined) {
       const realContext = (Context: any)._context;
       // Don't deduplicate because this legitimately causes bugs

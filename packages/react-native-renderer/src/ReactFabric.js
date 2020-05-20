@@ -82,7 +82,7 @@ function findNodeHandle(componentOrHandle: any): ?number {
   if (hostInstance == null) {
     return hostInstance;
   }
-  // TODO: the code is right but the types here are wrong.
+  // REACT: the code is right but the types here are wrong.
   // https://github.com/facebook/react/pull/12863
   if ((hostInstance: any).canonical) {
     // Fabric
@@ -130,7 +130,7 @@ const ReactFabric: ReactFabricType = {
   unmountComponentAtNode(containerTag: number) {
     const root = roots.get(containerTag);
     if (root) {
-      // TODO: Is it safe to reset this now or should I wait since this unmount could be deferred?
+      // REACT: Is it safe to reset this now or should I wait since this unmount could be deferred?
       updateContainer(null, root, null, () => {
         roots.delete(containerTag);
       });

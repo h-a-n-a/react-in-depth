@@ -84,7 +84,7 @@ static JSValueRef js_perf_counters_init(
   const JSValueRef arguments[],
   JSValueRef *exception
 ) {
-  // TODO: Allow customizing recorded events
+  // REACT: Allow customizing recorded events
   bool enable = true;
   std::string events = "";
   bool recordSubprocesses = false;

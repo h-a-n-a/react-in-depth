@@ -432,7 +432,7 @@ const PressResponder = {
 
       /**
        * Keyboard interaction support
-       * TODO: determine UX for metaKey + validKeyPress interactions
+       * REACT: determine UX for metaKey + validKeyPress interactions
        */
       case 'keydown': {
         if (

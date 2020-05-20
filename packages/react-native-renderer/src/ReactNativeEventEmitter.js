@@ -46,7 +46,7 @@ const touchSubsequence = function(touches, indices) {
 };
 
 /**
- * TODO: Pool all of this.
+ * REACT: Pool all of this.
  *
  * Destroys `touches` by removing touch objects at indices `indices`. This is
  * to maintain compatibility with W3C touch "end" events, where the active
@@ -138,7 +138,7 @@ export function receiveEvent(
  * since we dispatch an event for each touch (though that might not be spec
  * compliant). The main purpose of reusing them is to save allocations.
  *
- * TODO: Dispatch multiple changed touches in one event. The bubble path
+ * REACT: Dispatch multiple changed touches in one event. The bubble path
  * could be the first common ancestor of all the `changedTouches`.
  *
  * One difference between this behavior and W3C spec: cancelled touches will

@@ -662,7 +662,7 @@ function updateReducer<S, I, A>(
         hook.memoizedState = newState;
         // Don't persist the state accumlated from the render phase updates to
         // the base state unless the queue is empty.
-        // TODO: Not sure if this is the desired semantics, but it's what we
+        // REACT: Not sure if this is the desired semantics, but it's what we
         // do for gDSFP. I can't remember why.
         if (hook.baseUpdate === queue.last) {
           hook.baseState = newState;
@@ -945,7 +945,7 @@ function mountImperativeHandle<T>(
     );
   }
 
-  // TODO: If deps are provided, should we skip comparing the ref itself?
+  // REACT: If deps are provided, should we skip comparing the ref itself?
   const effectDeps =
     deps !== null && deps !== undefined ? deps.concat([ref]) : null;
 
@@ -971,7 +971,7 @@ function updateImperativeHandle<T>(
     );
   }
 
-  // TODO: If deps are provided, should we skip comparing the ref itself?
+  // REACT: If deps are provided, should we skip comparing the ref itself?
   const effectDeps =
     deps !== null && deps !== undefined ? deps.concat([ref]) : null;
 

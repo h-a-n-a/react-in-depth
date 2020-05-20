@@ -60,7 +60,7 @@ function computeExpirationBucket(
   );
 }
 
-// TODO: This corresponds to Scheduler's NormalPriority, not LowPriority. Update
+// REACT: This corresponds to Scheduler's NormalPriority, not LowPriority. Update
 // the names to reflect.
 export const LOW_PRIORITY_EXPIRATION = 5000;
 export const LOW_PRIORITY_BATCH_SIZE = 250;
@@ -123,7 +123,7 @@ export function inferPriorityFromExpirationTime(
     return NormalPriority;
   }
 
-  // TODO: Handle LowPriority
+  // REACT: Handle LowPriority
 
   // Assume anything lower has idle priority
   return IdlePriority;

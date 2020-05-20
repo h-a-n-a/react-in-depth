@@ -12,7 +12,7 @@ import type {ExpirationTime} from './ReactFiberExpirationTime';
 
 import {NoWork} from './ReactFiberExpirationTime';
 
-// TODO: Offscreen updates should never suspend. However, a promise that
+// REACT: Offscreen updates should never suspend. However, a promise that
 // suspended inside an offscreen subtree should be able to ping at the priority
 // of the outer render.
 
@@ -202,7 +202,7 @@ export function markPingedPriorityLevel(
 ): void {
   root.didError = false;
 
-  // TODO: When we add back resuming, we need to ensure the progressed work
+  // REACT: When we add back resuming, we need to ensure the progressed work
   // is thrown out and not reused during the restarted render. One way to
   // invalidate the progressed work is to restart at expirationTime + 1.
   const latestPingedTime = root.latestPingedTime;

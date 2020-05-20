@@ -348,7 +348,7 @@ describe('ReactIncrementalErrorHandling', () => {
     expect(ReactNoop.getChildren()).toEqual([]);
   });
 
-  // TODO: This is currently unobservable, but will be once we lift renderRoot
+  // REACT: This is currently unobservable, but will be once we lift renderRoot
   // and commitRoot into the renderer.
   // it("does not retry synchronously if there's an update between complete and commit");
 
@@ -748,7 +748,7 @@ describe('ReactIncrementalErrorHandling', () => {
     expect(ReactNoop.getChildren()).toEqual([span('a:5')]);
   });
 
-  // TODO: Is this a breaking change?
+  // REACT: Is this a breaking change?
   it('defers additional sync work to a separate event after an error', () => {
     ReactNoop.render(<span prop="a:1" />);
     expect(() => {
@@ -1427,7 +1427,7 @@ describe('ReactIncrementalErrorHandling', () => {
     }
   });
 
-  // TODO: Error boundary does not catch promises
+  // REACT: Error boundary does not catch promises
 
   it('continues working on siblings of a component that throws', () => {
     class ErrorBoundary extends React.Component {

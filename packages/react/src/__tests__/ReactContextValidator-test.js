@@ -30,7 +30,7 @@ describe('ReactContextValidator', () => {
     ReactTestUtils = require('react-dom/test-utils');
   });
 
-  // TODO: This behavior creates a runtime dependency on propTypes. We should
+  // REACT: This behavior creates a runtime dependency on propTypes. We should
   // ensure that this is not required for ES6 classes with Flow.
 
   it('should filter out context not in contextTypes', () => {

@@ -16,7 +16,7 @@ import {
   getCurrentTime,
 } from './SchedulerHostConfig';
 
-// TODO: Use symbols?
+// REACT: Use symbols?
 var ImmediatePriority = 1;
 var UserBlockingPriority = 2;
 var NormalPriority = 3;

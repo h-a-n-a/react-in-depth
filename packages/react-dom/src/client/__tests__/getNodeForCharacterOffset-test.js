@@ -9,7 +9,7 @@
 
 'use strict';
 
-// TODO: can we express this test with only public API?
+// REACT: can we express this test with only public API?
 const getNodeForCharacterOffset = require('../getNodeForCharacterOffset')
   .default;
 

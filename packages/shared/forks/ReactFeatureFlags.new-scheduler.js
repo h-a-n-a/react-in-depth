@@ -14,7 +14,7 @@ export const replayFailedUnitOfWorkWithInvokeGuardedCallback = __DEV__;
 export const warnAboutDeprecatedLifecycles = true;
 export const enableProfilerTimer = __PROFILE__;
 export const enableSchedulerTracing = __PROFILE__;
-export const enableSuspenseServerRenderer = false; // TODO: __DEV__? Here it might just be false.
+export const enableSuspenseServerRenderer = false; // REACT: __DEV__? Here it might just be false.
 export const enableSchedulerDebugging = false;
 export function addUserTimingListener() {
   throw new Error('Not implemented.');

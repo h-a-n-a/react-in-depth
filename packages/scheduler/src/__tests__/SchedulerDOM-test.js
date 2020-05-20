@@ -807,5 +807,5 @@ describe('SchedulerDOM', () => {
     });
   });
 
-  // TODO: test 'now'
+  // REACT: test 'now'
 });

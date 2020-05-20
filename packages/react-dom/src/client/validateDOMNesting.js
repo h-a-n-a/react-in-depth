@@ -6,7 +6,7 @@
  */
 
 import warningWithoutStack from 'shared/warningWithoutStack';
-// TODO: direct imports like some-package/src/* are bad. Fix me.
+// REACT: direct imports like some-package/src/* are bad. Fix me.
 import {getCurrentFiberStackInDev} from 'react-reconciler/src/ReactCurrentFiber';
 
 let validateDOMNesting = () => {};
@@ -124,7 +124,7 @@ if (__DEV__) {
     'template',
 
     // https://html.spec.whatwg.org/multipage/syntax.html#html-integration-point
-    // TODO: Distinguish by namespace here -- for <title>, including it here
+    // REACT: Distinguish by namespace here -- for <title>, including it here
     // errs on the side of fewer warnings
     'foreignObject',
     'desc',

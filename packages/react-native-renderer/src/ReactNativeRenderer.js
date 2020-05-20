@@ -23,7 +23,7 @@ import {
   injectIntoDevTools,
   getPublicRootInstance,
 } from 'react-reconciler/inline.native';
-// TODO: direct imports like some-package/src/* are bad. Fix me.
+// REACT: direct imports like some-package/src/* are bad. Fix me.
 import {getStackByFiberInDevAndProd} from 'react-reconciler/src/ReactCurrentFiber';
 import {createPortal} from 'shared/ReactPortal';
 import {
@@ -136,7 +136,7 @@ const ReactNativeRenderer: ReactNativeType = {
   unmountComponentAtNode(containerTag: number) {
     const root = roots.get(containerTag);
     if (root) {
-      // TODO: Is it safe to reset this now or should I wait since this unmount could be deferred?
+      // REACT: Is it safe to reset this now or should I wait since this unmount could be deferred?
       updateContainer(null, root, null, () => {
         roots.delete(containerTag);
       });

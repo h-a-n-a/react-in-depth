@@ -209,7 +209,7 @@ export function getChildHostContext(
 export function getChildHostContextForEventComponent(
   parentHostContext: HostContext,
 ) {
-  // TODO: add getChildHostContextForEventComponent implementation
+  // REACT: add getChildHostContextForEventComponent implementation
   return parentHostContext;
 }
 
@@ -217,7 +217,7 @@ export function getChildHostContextForEventTarget(
   parentHostContext: HostContext,
   type: Symbol | number,
 ) {
-  // TODO: add getChildHostContextForEventTarget implementation
+  // REACT: add getChildHostContextForEventTarget implementation
   return parentHostContext;
 }
 
@@ -338,7 +338,7 @@ export function commitMount(
 
 export function commitUpdate(
   instance: Instance,
-  updatePayloadTODO: Object,
+  updatePayloadREACT: Object,
   type: string,
   oldProps: Props,
   newProps: Props,

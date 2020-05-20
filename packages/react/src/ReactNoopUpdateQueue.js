@@ -93,7 +93,7 @@ const ReactNoopUpdateQueue = {
   /**
    * Sets a subset of the state. This only exists because _pendingState is
    * internal. This provides a merging strategy that is not available to deep
-   * properties which is confusing. TODO: Expose pendingState or don't use it
+   * properties which is confusing. REACT: Expose pendingState or don't use it
    * during the merge.
    *
    * @param {ReactClass} publicInstance The instance that should rerender.

@@ -91,7 +91,7 @@ describe('ChangeEventPlugin', () => {
     node.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
 
     if (ReactFeatureFlags.disableInputAttributeSyncing) {
-      // TODO: figure out why. This might be a bug.
+      // REACT: figure out why. This might be a bug.
       expect(called).toBe(1);
     } else {
       // There should be no React change events because the value stayed the same.

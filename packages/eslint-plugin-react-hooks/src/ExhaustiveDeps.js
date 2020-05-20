@@ -94,7 +94,7 @@ export default {
           reactiveHookName === 'useMemo' ||
           reactiveHookName === 'useCallback'
         ) {
-          // TODO: Can this have an autofix?
+          // REACT: Can this have an autofix?
           context.report({
             node: node.parent.callee,
             message:
@@ -531,7 +531,7 @@ export default {
             }
             const isDirectlyInsideEffect = fnScope.block === node;
             if (isDirectlyInsideEffect) {
-              // TODO: we could potentially ignore early returns.
+              // REACT: we could potentially ignore early returns.
               setStateInsideEffectWithoutDeps = key;
             }
           });
@@ -708,10 +708,10 @@ export default {
                 fn.name.name
               }' definition into its own useCallback() Hook.`;
           }
-          // TODO: What if the function needs to change on every render anyway?
+          // REACT: What if the function needs to change on every render anyway?
           // Should we suggest removing effect deps as an appropriate fix too?
           context.report({
-            // TODO: Why not report this at the dependency site?
+            // REACT: Why not report this at the dependency site?
             node: fn.node,
             message,
             fix(fixer) {
@@ -719,9 +719,9 @@ export default {
               // Wrapping function declarations can mess up hoisting.
               if (suggestUseCallback && fn.type === 'Variable') {
                 return [
-                  // TODO: also add an import?
+                  // REACT: also add an import?
                   fixer.insertTextBefore(fn.node.init, 'useCallback('),
-                  // TODO: ideally we'd gather deps here but it would require
+                  // REACT: ideally we'd gather deps here but it would require
                   // restructuring the rule code. This will cause a new lint
                   // error to appear immediately for useCallback. Note we're
                   // not adding [] because would that changes semantics.
@@ -1015,7 +1015,7 @@ export default {
             )) +
           extraWarning,
         fix(fixer) {
-          // TODO: consider preserving the comments or formatting?
+          // REACT: consider preserving the comments or formatting?
           return fixer.replaceText(
             declaredDependenciesNode,
             `[${suggestedDependencies.join(', ')}]`,

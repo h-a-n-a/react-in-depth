@@ -27,7 +27,7 @@ describe('dangerouslySetInnerHTML', () => {
   describe('when the node does not have an innerHTML property', () => {
     let innerHTMLDescriptor;
 
-    // In some versions of IE (TODO: which ones?) SVG nodes don't have
+    // In some versions of IE (REACT: which ones?) SVG nodes don't have
     // innerHTML. To simulate this, we will take it off the Element prototype
     // and put it onto the HTMLDivElement prototype. We expect that the logic
     // checks for existence of innerHTML on SVG, and if one doesn't exist, falls

@@ -33,7 +33,7 @@ function initModules() {
 
 const {resetModules, itRenders} = ReactDOMServerIntegrationUtils(initModules);
 
-// TODO: Run this in React Fire mode after we figure out the SSR behavior.
+// REACT: Run this in React Fire mode after we figure out the SSR behavior.
 const desc = disableInputAttributeSyncing ? xdescribe : describe;
 desc('ReactDOMServerIntegrationCheckbox', () => {
   beforeEach(() => {

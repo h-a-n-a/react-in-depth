@@ -297,7 +297,7 @@ export default function Fibers({fibers, show, graphSettings, ...rest}) {
               }}
               title={
                 /*prettyFormat(fiber, { plugins: [reactElement ]})*/
-                'todo: this was hanging last time I tried to pretty print'
+                'REACT: this was hanging last time I tried to pretty print'
               }>
               <small>
                 {fiber.tag} #{fiber.id}

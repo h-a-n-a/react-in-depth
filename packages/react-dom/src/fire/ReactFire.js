@@ -9,11 +9,11 @@
 
 // This file is copy paste from ReactDOM with adjusted paths
 // and a different host config import (react-reconciler/inline.fire).
-// TODO: real implementation.
+// REACT: real implementation.
 // console.log('Hello from Fire entry point.');
 
 import type {ReactNodeList} from 'shared/ReactTypes';
-// TODO: This type is shared between the reconciler and ReactDOM, but will
+// REACT: This type is shared between the reconciler and ReactDOM, but will
 // eventually be lifted out to the renderer.
 import type {
   FiberRoot,
@@ -268,7 +268,7 @@ ReactBatch.prototype.commit = function() {
       // Rendering this batch again ensures its children will be the final state
       // when we flush (updates are processed in insertion order: last
       // update wins).
-      // TODO: This forces a restart. Should we print a warning?
+      // REACT: This forces a restart. Should we print a warning?
       this.render(this._children);
     }
 
@@ -313,7 +313,7 @@ ReactBatch.prototype._onComplete = function() {
   if (callbacks === null) {
     return;
   }
-  // TODO: Error handling.
+  // REACT: Error handling.
   for (let i = 0; i < callbacks.length; i++) {
     const callback = callbacks[i];
     callback();
@@ -330,7 +330,7 @@ type Work = {
 function ReactWork() {
   this._callbacks = null;
   this._didCommit = false;
-  // TODO: Avoid need to bind by replacing callbacks in the update queue with
+  // REACT: Avoid need to bind by replacing callbacks in the update queue with
   // list of Work objects.
   this._onCommit = this._onCommit.bind(this);
 }
@@ -354,7 +354,7 @@ ReactWork.prototype._onCommit = function(): void {
   if (callbacks === null) {
     return;
   }
-  // TODO: Error handling.
+  // REACT: Error handling.
   for (let i = 0; i < callbacks.length; i++) {
     const callback = callbacks[i];
     invariant(
@@ -553,7 +553,7 @@ function legacyRenderSubtreeIntoContainer(
     topLevelUpdateWarnings(container);
   }
 
-  // TODO: Without `any` type, Flow says "Property cannot be accessed on any
+  // REACT: Without `any` type, Flow says "Property cannot be accessed on any
   // member of intersection type." Whyyyyyy.
   let root: Root = (container._reactRootContainer: any);
   if (!root) {
@@ -612,7 +612,7 @@ function createPortal(
     isValidContainer(container),
     'Target container is not a DOM element.',
   );
-  // TODO: pass ReactDOM portal implementation as third argument
+  // REACT: pass ReactDOM portal implementation as third argument
   return createPortalImpl(children, container, null, key);
 }
 
@@ -665,7 +665,7 @@ const ReactDOM: Object = {
         enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot',
       );
     }
-    // TODO: throw or warn if we couldn't hydrate?
+    // REACT: throw or warn if we couldn't hydrate?
     return legacyRenderSubtreeIntoContainer(
       null,
       element,
@@ -788,7 +788,7 @@ const ReactDOM: Object = {
   },
 
   // Temporary alias since we already shipped React 16 RC with it.
-  // TODO: remove in React 17.
+  // REACT: remove in React 17.
   unstable_createPortal(...args) {
     if (!didWarnAboutUnstableCreatePortal) {
       didWarnAboutUnstableCreatePortal = true;

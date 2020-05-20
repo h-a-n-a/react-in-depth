@@ -210,7 +210,7 @@ const properties = {};
 [
   'children',
   'dangerouslySetInnerHTML',
-  // TODO: This prevents the assignment of defaultValue to regular
+  // REACT: This prevents the assignment of defaultValue to regular
   // elements (not just inputs). Now that ReactDOMInput assigns to the
   // defaultValue property -- do we need this?
   'defaultValue',

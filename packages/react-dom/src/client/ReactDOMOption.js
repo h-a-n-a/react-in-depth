@@ -43,7 +43,7 @@ export function validateProps(element: Element, props: Object) {
   if (__DEV__) {
     // This mirrors the codepath above, but runs for hydration too.
     // Warn about invalid children here so that client and hydration are consistent.
-    // TODO: this seems like it could cause a DEV-only throw for hydration
+    // REACT: this seems like it could cause a DEV-only throw for hydration
     // if children contains a non-element object. We should try to avoid that.
     if (typeof props.children === 'object' && props.children !== null) {
       React.Children.forEach(props.children, function(child) {
@@ -66,7 +66,7 @@ export function validateProps(element: Element, props: Object) {
       });
     }
 
-    // TODO: Remove support for `selected` in <option>.
+    // REACT: Remove support for `selected` in <option>.
     if (props.selected != null && !didWarnSelectedSetOnOption) {
       warning(
         false,

@@ -7,7 +7,7 @@
 
 'use strict';
 
-// TODO: Move flattenStyle into react
+// REACT: Move flattenStyle into react
 
 const flattenStyle = function() {};
 

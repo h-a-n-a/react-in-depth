@@ -8,7 +8,7 @@
  */
 
 // This is just to get the setup running.
-// TODO: real implementation.
+// REACT: real implementation.
 // console.log('Hello from Fire host config.');
 
 export * from '../client/ReactDOMHostConfig';

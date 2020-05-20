@@ -38,7 +38,7 @@ if (__DEV__) {
     // These should not be included in production.
     ReactDebugCurrentFrame,
     // Shim for React DOM 16.0.0 which still destructured (but not used) this.
-    // TODO: remove in React 17.0.
+    // REACT: remove in React 17.0.
     ReactComponentTreeHook: {},
   });
 }

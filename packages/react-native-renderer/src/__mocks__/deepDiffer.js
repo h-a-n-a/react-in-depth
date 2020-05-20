@@ -7,7 +7,7 @@
 
 'use strict';
 
-// TODO: Move deepDiffer into react
+// REACT: Move deepDiffer into react
 
 const deepDiffer = function(one: any, two: any): boolean {
   if (one === two) {

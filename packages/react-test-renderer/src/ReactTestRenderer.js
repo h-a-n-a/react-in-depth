@@ -188,7 +188,7 @@ function toTree(node: ?Fiber) {
         nodeType: 'host',
         type: node.type,
         props: {...node.memoizedProps},
-        instance: null, // TODO: use createNodeMock here somehow?
+        instance: null, // REACT: use createNodeMock here somehow?
         rendered: flatten(nodeAndSiblingsArray(node.child).map(toTree)),
       };
     }

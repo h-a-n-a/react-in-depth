@@ -504,7 +504,7 @@ describe('ReactChildren', () => {
       return this;
     };
 
-    // TODO: Use an object to test, after non-object fragments has fully landed.
+    // REACT: Use an object to test, after non-object fragments has fully landed.
     const scopeTester = 'scope tester';
 
     const simpleKid = <span key="simple" />;

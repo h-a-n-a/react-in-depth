@@ -368,7 +368,7 @@ const attributes = [
     tagName: 'svg',
     read: getSVGAttribute('contentStyleType'),
   },
-  {name: 'contextMenu', read: getAttribute('contextmenu')}, // TODO: Read the property by rendering a menu with the ID.
+  {name: 'contextMenu', read: getAttribute('contextmenu')}, // REACT: Read the property by rendering a menu with the ID.
   {name: 'controls', tagName: 'video'},
   {name: 'coords', tagName: 'a'},
   {name: 'crossOrigin', tagName: 'script'},
@@ -722,7 +722,7 @@ const attributes = [
   },
   {name: 'for', tagName: 'label', read: getProperty('htmlFor')},
   {name: 'fOr', tagName: 'label', read: getProperty('htmlFor')},
-  {name: 'form', read: getAttribute('form')}, // TODO: Read the property by rendering into a form with i
+  {name: 'form', read: getAttribute('form')}, // REACT: Read the property by rendering into a form with i
   {
     name: 'formAction',
     tagName: 'input',
@@ -861,7 +861,7 @@ const attributes = [
     tagName: 'font-face',
   },
   // Disabled because it crashes other tests with React 15.
-  // TODO: re-enable when we no longer compare to 15.
+  // REACT: re-enable when we no longer compare to 15.
   // {name: 'hasOwnProperty', read: getAttribute('hasOwnProperty')},
   {name: 'headers', containerTagName: 'tr', tagName: 'td'},
   {name: 'height', tagName: 'img'},
@@ -937,7 +937,7 @@ const attributes = [
   {name: 'initialChecked', read: getAttribute('initialchecked')},
   {name: 'initialValue', read: getAttribute('initialvalue')},
   {name: 'inlist', read: getAttribute('inlist')},
-  {name: 'inputMode', tagName: 'input', read: getAttribute('inputmode')}, // TODO: Should use property but it's not implemented in Chrome
+  {name: 'inputMode', tagName: 'input', read: getAttribute('inputmode')}, // REACT: Should use property but it's not implemented in Chrome
   {name: 'integrity', tagName: 'script'},
   {
     name: 'intercept',
@@ -949,7 +949,7 @@ const attributes = [
     name: 'is',
     tagName: 'button',
     overrideStringValue: 'x-test-element',
-    read: getAttribute('is'), // TODO: This could check if this is an extended custom element but this is a controversial spec.
+    read: getAttribute('is'), // REACT: This could check if this is an extended custom element but this is a controversial spec.
   },
   {name: 'itemID', read: getAttribute('itemid')},
   {name: 'itemProp', read: getAttribute('itemprop')},
@@ -1079,7 +1079,7 @@ const attributes = [
     containerTagName: 'svg',
     tagName: 'feSpotLight',
   },
-  {name: 'list', read: getAttribute('list')}, // TODO: This should match the ID of a datalist element and then read property.
+  {name: 'list', read: getAttribute('list')}, // REACT: This should match the ID of a datalist element and then read property.
   {
     name: 'local',
     read: getSVGAttribute('local'),
@@ -1188,7 +1188,7 @@ const attributes = [
     tagName: 'style',
     read: getSVGProperty('media'),
   },
-  {name: 'mediaGroup', tagName: 'video', read: getAttribute('mediagroup')}, // TODO: Not yet implemented in Chrome.
+  {name: 'mediaGroup', tagName: 'video', read: getAttribute('mediagroup')}, // REACT: Not yet implemented in Chrome.
   {name: 'method', tagName: 'form', overrideStringValue: 'POST'},
   {
     name: 'method',
@@ -1237,12 +1237,12 @@ const attributes = [
     containerTagName: 'svg',
     tagName: 'stop',
   },
-  {name: 'on-click'}, // TODO: Check for event subscriptions
-  {name: 'on-unknownevent'}, // TODO: Check for event subscriptions
-  {name: 'onclick'}, // TODO: Check for event subscriptions
-  {name: 'onClick'}, // TODO: Check for event subscriptions
-  {name: 'onunknownevent'}, // TODO: Check for event subscriptions
-  {name: 'onUnknownEvent'}, // TODO: Check for event subscriptions
+  {name: 'on-click'}, // REACT: Check for event subscriptions
+  {name: 'on-unknownevent'}, // REACT: Check for event subscriptions
+  {name: 'onclick'}, // REACT: Check for event subscriptions
+  {name: 'onClick'}, // REACT: Check for event subscriptions
+  {name: 'onunknownevent'}, // REACT: Check for event subscriptions
+  {name: 'onUnknownEvent'}, // REACT: Check for event subscriptions
   {
     name: 'opacity',
     containerTagName: 'svg',
@@ -1515,7 +1515,7 @@ const attributes = [
     containerTagName: 'svg',
     tagName: 'feBlend',
   },
-  {name: 'results', tagName: 'input', read: getAttribute('results')}, // TODO: Should use property but it's not supported in Chrome.
+  {name: 'results', tagName: 'input', read: getAttribute('results')}, // REACT: Should use property but it's not supported in Chrome.
   {name: 'reversed', tagName: 'ol'},
   {name: 'role', read: getAttribute('role')},
   {

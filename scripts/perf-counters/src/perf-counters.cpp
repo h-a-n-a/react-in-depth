@@ -14,7 +14,7 @@ namespace PerfCounters {
 using HPHP::HardwareCounter;
 
 void Init(const v8::FunctionCallbackInfo<v8::Value>& args) {
-  // TODO: Allow customizing recorded events
+  // REACT: Allow customizing recorded events
   bool enable = true;
   std::string events = "";
   bool recordSubprocesses = false;

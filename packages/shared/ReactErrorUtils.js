@@ -57,7 +57,7 @@ export function invokeGuardedCallback<A, B, C, D, E, F, Context>(
 /**
  * Same as invokeGuardedCallback, but instead of returning an error, it stores
  * it in a global so it can be rethrown by `rethrowCaughtError` later.
- * TODO: See if caughtError and rethrowError can be unified.
+ * REACT: See if caughtError and rethrowError can be unified.
  *
  * @param {String} name of the guard to use for logging or debugging
  * @param {Function} func The function to invoke

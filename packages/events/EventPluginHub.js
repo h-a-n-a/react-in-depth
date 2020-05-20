@@ -97,7 +97,7 @@ export const injection = {
 export function getListener(inst: Fiber, registrationName: string) {
   let listener;
 
-  // TODO: shouldPreventMouseEvent is DOM-specific and definitely should not
+  // REACT: shouldPreventMouseEvent is DOM-specific and definitely should not
   // live here; needs to be moved to a better place soon
   const stateNode = inst.stateNode;
   if (!stateNode) {

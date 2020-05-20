@@ -450,7 +450,7 @@ const bundles = [
 
   /******* ESLint Plugin for Hooks (proposal) *******/
   {
-    // TODO: it's awkward to create a bundle for this
+    // REACT: it's awkward to create a bundle for this
     // but if we don't, the package won't get copied.
     // We also can't create just DEV bundle because
     // it contains a NODE_ENV check inside.

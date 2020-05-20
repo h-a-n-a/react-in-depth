@@ -14,7 +14,7 @@ let React;
 let ReactDOM;
 let ReactFeatureFlags;
 
-// TODO: Refactor this test once componentDidCatch setState is deprecated.
+// REACT: Refactor this test once componentDidCatch setState is deprecated.
 describe('ReactLegacyErrorBoundaries', () => {
   let log;
 

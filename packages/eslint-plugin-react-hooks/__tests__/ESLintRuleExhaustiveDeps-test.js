@@ -1431,7 +1431,7 @@ const tests = {
           useEffect(() => {}, ['foo']);
         }
       `,
-      // TODO: we could autofix this.
+      // REACT: we could autofix this.
       output: `
         function MyComponent() {
           useEffect(() => {}, ['foo']);
@@ -1519,7 +1519,7 @@ const tests = {
           }, dependencies);
         }
       `,
-      // TODO: should this autofix or bail out?
+      // REACT: should this autofix or bail out?
       output: `
         function MyComponent() {
           const local = {};
@@ -1547,7 +1547,7 @@ const tests = {
           }, [...dependencies]);
         }
       `,
-      // TODO: should this autofix or bail out?
+      // REACT: should this autofix or bail out?
       output: `
         function MyComponent() {
           const local = {};
@@ -1597,7 +1597,7 @@ const tests = {
           }, [computeCacheKey(local)]);
         }
       `,
-      // TODO: I'm not sure this is a good idea.
+      // REACT: I'm not sure this is a good idea.
       // Maybe bail out?
       output: `
         function MyComponent() {
@@ -1644,7 +1644,7 @@ const tests = {
           }, [props.items, props.items[0]]);
         }
       `,
-      // TODO: ideally autofix would remove the bad expression?
+      // REACT: ideally autofix would remove the bad expression?
       output: `
         function MyComponent(props) {
           useEffect(() => {
@@ -1687,7 +1687,7 @@ const tests = {
           }, [items, items[0]]);
         }
       `,
-      // TODO: ideally autofix would remove the bad expression?
+      // REACT: ideally autofix would remove the bad expression?
       output: `
         function MyComponent({ items }) {
           useEffect(() => {
@@ -1875,7 +1875,7 @@ const tests = {
       // However, it *is* allowed to specify broader deps then strictly necessary.
       // So in this case we ask you to remove 'props.foo.bar.baz' because 'props.foo'
       // already covers it, and having both is unnecessary.
-      // TODO: maybe consider suggesting a narrower one by default in these cases.
+      // REACT: maybe consider suggesting a narrower one by default in these cases.
       code: `
         function MyComponent(props) {
           const fn = useCallback(() => {
@@ -2310,7 +2310,7 @@ const tests = {
           }, [a ? local : b]);
         }
       `,
-      // TODO: should we bail out instead?
+      // REACT: should we bail out instead?
       output: `
         function MyComponent() {
           const local = {};
@@ -2335,7 +2335,7 @@ const tests = {
           }, [a && local]);
         }
       `,
-      // TODO: should we bail out instead?
+      // REACT: should we bail out instead?
       output: `
         function MyComponent() {
           const local = {};
@@ -3899,7 +3899,7 @@ const tests = {
           }, [handleNext1, handleNext2]);
         }
       `,
-      // TODO: we could coalesce messages for the same function if it affects multiple Hooks.
+      // REACT: we could coalesce messages for the same function if it affects multiple Hooks.
       errors: [
         "The 'handleNext1' function makes the dependencies of useEffect Hook " +
           '(at line 12) change on every render. To fix this, wrap the ' +
@@ -3933,7 +3933,7 @@ const tests = {
       `,
       // Normally we'd suggest moving handleNext inside an
       // effect. But it's used more than once.
-      // TODO: our autofix here isn't quite sufficient because
+      // REACT: our autofix here isn't quite sufficient because
       // it only wraps the first definition. But seems ok.
       output: `
         function MyComponent(props) {
@@ -4309,7 +4309,7 @@ const tests = {
           return <h1>{count}</h1>;
         }
       `,
-      // TODO: ideally this should suggest useState updater form
+      // REACT: ideally this should suggest useState updater form
       // since this code doesn't actually work. The autofix could
       // at least avoid suggesting 'tick' since it's obviously
       // always different, and thus useless.
@@ -4330,7 +4330,7 @@ const tests = {
       `,
       // Note: this autofix is shady because
       // the variable is used before declaration.
-      // TODO: Maybe we can catch those fixes and not autofix.
+      // REACT: Maybe we can catch those fixes and not autofix.
       output: `
         function Podcasts() {
           useEffect(() => {

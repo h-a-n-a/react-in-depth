@@ -7,7 +7,7 @@
  * @flow
  */
 
-// TODO: direct imports like some-package/src/* are bad. Fix me.
+// REACT: direct imports like some-package/src/* are bad. Fix me.
 import {getCurrentFiberOwnerNameInDevOrNull} from 'react-reconciler/src/ReactCurrentFiber';
 import invariant from 'shared/invariant';
 import warning from 'shared/warning';

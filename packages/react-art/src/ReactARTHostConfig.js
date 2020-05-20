@@ -198,7 +198,7 @@ function applyRenderableNodeProps(instance, props, prevProps = {}) {
     prevProps.strokeWidth !== props.strokeWidth ||
     prevProps.strokeCap !== props.strokeCap ||
     prevProps.strokeJoin !== props.strokeJoin ||
-    // TODO: Consider deep check of stokeDash; may benefit VML in IE.
+    // REACT: Consider deep check of stokeDash; may benefit VML in IE.
     prevProps.strokeDash !== props.strokeDash
   ) {
     instance.stroke(

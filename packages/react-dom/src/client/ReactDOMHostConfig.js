@@ -273,7 +273,7 @@ export function createInstance(
 ): Instance {
   let parentNamespace: string;
   if (__DEV__) {
-    // TODO: take namespace into account when validating.
+    // REACT: take namespace into account when validating.
     const hostContextDev = ((hostContext: any): HostContextDev);
     validateDOMNesting(type, null, hostContextDev.ancestorInfo);
     if (
@@ -491,7 +491,7 @@ export function appendChildToContainer(
     (reactRootContainer === null || reactRootContainer === undefined) &&
     parentNode.onclick === null
   ) {
-    // TODO: This cast may not be sound for SVG, MathML or custom elements.
+    // REACT: This cast may not be sound for SVG, MathML or custom elements.
     trapClickOnNonInteractiveElement(((parentNode: any): HTMLElement));
   }
 }
@@ -565,7 +565,7 @@ export function clearSuspenseBoundary(
     }
     node = nextNode;
   } while (node);
-  // TODO: Warn, we didn't find the end comment boundary.
+  // REACT: Warn, we didn't find the end comment boundary.
 }
 
 export function clearSuspenseBoundaryFromContainer(
@@ -582,7 +582,7 @@ export function clearSuspenseBoundaryFromContainer(
 }
 
 export function hideInstance(instance: Instance): void {
-  // TODO: Does this work for all element types? What about MathML? Should we
+  // REACT: Does this work for all element types? What about MathML? Should we
   // pass host context to this method?
   instance = ((instance: any): HTMLElement);
   instance.style.display = 'none';
@@ -719,7 +719,7 @@ export function hydrateInstance(
   internalInstanceHandle: Object,
 ): null | Array<mixed> {
   precacheFiberNode(internalInstanceHandle, instance);
-  // TODO: Possibly defer this until the commit phase where all the events
+  // REACT: Possibly defer this until the commit phase where all the events
   // get attached.
   updateFiberProps(instance, props);
   let parentNamespace: string;
@@ -770,7 +770,7 @@ export function getNextHydratableInstanceAfterSuspenseInstance(
     }
     node = node.nextSibling;
   }
-  // TODO: Warn, we didn't find the end comment boundary.
+  // REACT: Warn, we didn't find the end comment boundary.
   return null;
 }
 
@@ -804,7 +804,7 @@ export function didNotHydrateContainerInstance(
     if (instance.nodeType === ELEMENT_NODE) {
       warnForDeletedHydratableElement(parentContainer, (instance: any));
     } else if (instance.nodeType === COMMENT_NODE) {
-      // TODO: warnForDeletedHydratableSuspenseBoundary
+      // REACT: warnForDeletedHydratableSuspenseBoundary
     } else {
       warnForDeletedHydratableText(parentContainer, (instance: any));
     }
@@ -821,7 +821,7 @@ export function didNotHydrateInstance(
     if (instance.nodeType === ELEMENT_NODE) {
       warnForDeletedHydratableElement(parentInstance, (instance: any));
     } else if (instance.nodeType === COMMENT_NODE) {
-      // TODO: warnForDeletedHydratableSuspenseBoundary
+      // REACT: warnForDeletedHydratableSuspenseBoundary
     } else {
       warnForDeletedHydratableText(parentInstance, (instance: any));
     }
@@ -851,7 +851,7 @@ export function didNotFindHydratableContainerSuspenseInstance(
   parentContainer: Container,
 ) {
   if (__DEV__) {
-    // TODO: warnForInsertedHydratedSupsense(parentContainer);
+    // REACT: warnForInsertedHydratedSupsense(parentContainer);
   }
 }
 
@@ -884,7 +884,7 @@ export function didNotFindHydratableSuspenseInstance(
   parentInstance: Instance,
 ) {
   if (__DEV__ && parentProps[SUPPRESS_HYDRATION_WARNING] !== true) {
-    // TODO: warnForInsertedHydratedSuspense(parentInstance);
+    // REACT: warnForInsertedHydratedSuspense(parentInstance);
   }
 }
 

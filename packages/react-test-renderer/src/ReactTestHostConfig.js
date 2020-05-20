@@ -368,7 +368,7 @@ export function unmountEventComponent(
   rootContainerInstance: Container,
   internalInstanceHandle: Object,
 ): void {
-  // TODO: add unmountEventComponent implementation
+  // REACT: add unmountEventComponent implementation
 }
 
 export function handleEventTarget(

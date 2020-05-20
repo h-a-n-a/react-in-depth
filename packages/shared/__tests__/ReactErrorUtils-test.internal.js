@@ -13,7 +13,7 @@ let ReactErrorUtils;
 
 describe('ReactErrorUtils', () => {
   beforeEach(() => {
-    // TODO: can we express this test with only public API?
+    // REACT: can we express this test with only public API?
     ReactErrorUtils = require('shared/ReactErrorUtils');
   });
 

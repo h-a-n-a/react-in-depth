@@ -77,7 +77,7 @@ const eventTypes = {
    * a touch start will be immediately followed by a scroll event if the view is
    * currently scrolling.
    *
-   * TODO: This shouldn't bubble.
+   * REACT: This shouldn't bubble.
    */
   scrollShouldSetResponder: {
     phasedRegistrationNames: {
@@ -92,7 +92,7 @@ const eventTypes = {
    * is needed for text inputs or other views with native selection, so the
    * JS view can claim the responder.
    *
-   * TODO: This shouldn't bubble.
+   * REACT: This shouldn't bubble.
    */
   selectionChangeShouldSetResponder: {
     phasedRegistrationNames: {
@@ -186,7 +186,7 @@ const eventTypes = {
  *   *current* responderInst, an `onResponderRelease` event is dispatched to the
  *   current responder, and the responder lock is released.
  *
- * TODO:
+ * REACT:
  * - on "end", a callback hook for `onResponderEndShouldRemainResponder` that
  *   determines if the responder lock should remain.
  * - If a view shouldn't "remain" the responder, any active touches should by
@@ -355,7 +355,7 @@ function setResponderAndExtractTransfer(
         ? eventTypes.selectionChangeShouldSetResponder
         : eventTypes.scrollShouldSetResponder;
 
-  // TODO: stop one short of the current responder.
+  // REACT: stop one short of the current responder.
   const bubbleShouldSetFrom = !responderInst
     ? targetInst
     : getLowestCommonAncestor(responderInst, targetInst);

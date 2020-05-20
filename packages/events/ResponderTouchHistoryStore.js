@@ -61,7 +61,7 @@ function timestampForTouch(touch: Touch): number {
 }
 
 /**
- * TODO: Instead of making gestures recompute filtered velocity, we could
+ * REACT: Instead of making gestures recompute filtered velocity, we could
  * include a built in velocity computation that can be reused globally.
  */
 function createTouchRecord(touch: Touch): TouchRecord {

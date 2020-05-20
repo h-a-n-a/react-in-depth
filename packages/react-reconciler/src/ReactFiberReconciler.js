@@ -79,7 +79,7 @@ type DevToolsConfig = {|
   findFiberByHostInstance?: (instance: Instance | TextInstance) => Fiber,
   // Used by RN in-app inspector.
   // This API is unfortunately RN-specific.
-  // TODO: Change it to accept Fiber instead and type it properly.
+  // REACT: Change it to accept Fiber instead and type it properly.
   getInspectorDataForViewTag?: (tag: number) => Object,
 |};
 
@@ -166,7 +166,7 @@ export function updateContainerAtExpirationTime(
   expirationTime: ExpirationTime,
   callback: ?Function,
 ) {
-  // TODO: If this is a nested container, this won't be the root.
+  // REACT: If this is a nested container, this won't be the root.
   // 和之前一样
   const current = container.current;
 

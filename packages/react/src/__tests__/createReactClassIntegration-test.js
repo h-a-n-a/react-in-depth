@@ -198,7 +198,7 @@ describe('create-react-class-integration', () => {
     );
   });
 
-  // TODO: Consider actually moving these to statics or drop this unit test.
+  // REACT: Consider actually moving these to statics or drop this unit test.
   xit('should warn when using deprecated non-static spec keys', () => {
     expect(() =>
       createReactClass({

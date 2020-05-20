@@ -82,11 +82,11 @@ if (__DEV__) {
     const testSet = new Set([nonExtensibleObject]);
     // This is necessary for Rollup to not consider these unused.
     // https://github.com/rollup/rollup/issues/1771
-    // TODO: we can remove these if Rollup fixes the bug.
+    // REACT: we can remove these if Rollup fixes the bug.
     testMap.set(0, 0);
     testSet.add(0);
   } catch (e) {
-    // TODO: Consider warning about bad polyfills
+    // REACT: Consider warning about bad polyfills
     hasBadMapPolyfill = true;
   }
 }
@@ -683,7 +683,7 @@ function createFiberFromProfiler(
   }
 
   const fiber = createFiber(Profiler, pendingProps, key, mode | ProfileMode);
-  // TODO: The Profiler fiber shouldn't have a type. It has a tag.
+  // REACT: The Profiler fiber shouldn't have a type. It has a tag.
   fiber.elementType = REACT_PROFILER_TYPE;
   fiber.type = REACT_PROFILER_TYPE;
   fiber.expirationTime = expirationTime;
@@ -699,7 +699,7 @@ function createFiberFromMode(
 ): Fiber {
   const fiber = createFiber(Mode, pendingProps, key, mode);
 
-  // TODO: The Mode fiber shouldn't have a type. It has a tag.
+  // REACT: The Mode fiber shouldn't have a type. It has a tag.
   const type =
     (mode & ConcurrentMode) === NoContext
       ? REACT_STRICT_MODE_TYPE
@@ -719,7 +719,7 @@ export function createFiberFromSuspense(
 ) {
   const fiber = createFiber(SuspenseComponent, pendingProps, key, mode);
 
-  // TODO: The SuspenseComponent fiber shouldn't have a type. It has a tag.
+  // REACT: The SuspenseComponent fiber shouldn't have a type. It has a tag.
   const type = REACT_SUSPENSE_TYPE;
   fiber.elementType = type;
   fiber.type = type;
@@ -740,7 +740,7 @@ export function createFiberFromText(
 
 export function createFiberFromHostInstanceForDeletion(): Fiber {
   const fiber = createFiber(HostComponent, null, null, NoContext);
-  // TODO: These should not need a type.
+  // REACT: These should not need a type.
   fiber.elementType = 'DELETED';
   fiber.type = 'DELETED';
   return fiber;

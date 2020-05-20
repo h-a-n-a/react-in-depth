@@ -48,7 +48,7 @@ const localCancelAnimationFrame =
 // we're backgrounded we prefer for that work to happen so that the page
 // continues to load in the background. So we also schedule a 'setTimeout' as
 // a fallback.
-// TODO: Need a better heuristic for backgrounded work.
+// REACT: Need a better heuristic for backgrounded work.
 const ANIMATION_FRAME_TIMEOUT = 100;
 let rAFID;
 let rAFTimeoutID;
@@ -118,7 +118,7 @@ if (
   };
 } else {
   if (typeof console !== 'undefined') {
-    // TODO: Remove fb.me link
+    // REACT: Remove fb.me link
     if (typeof localRequestAnimationFrame !== 'function') {
       console.error(
         "This browser doesn't support requestAnimationFrame. " +
@@ -310,7 +310,7 @@ if (
       port.postMessage(undefined);
     } else if (!isAnimationFrameScheduled) {
       // If rAF didn't already schedule one, we need to schedule a frame.
-      // TODO: If this rAF doesn't materialize because the browser throttles, we
+      // REACT: If this rAF doesn't materialize because the browser throttles, we
       // might want to still have setTimeout trigger rIC as a backup to ensure
       // that we keep performing work.
       // isAnimationFrameScheduled 设为 true 的话就不会再进这个分支了

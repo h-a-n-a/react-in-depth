@@ -979,7 +979,7 @@ describe('ReactIncrementalSideEffects', () => {
       </div>,
     );
   });
-  // TODO: Test that side-effects are not cut off when a work in progress node
+  // REACT: Test that side-effects are not cut off when a work in progress node
   // moves to "current" without flushing due to having lower priority. Does this
   // even happen? Maybe a child doesn't get processed because it is lower prio?
 
@@ -1035,7 +1035,7 @@ describe('ReactIncrementalSideEffects', () => {
     expect(called).toBe(true);
   });
 
-  // TODO: Test that callbacks are not lost if an update is preempted.
+  // REACT: Test that callbacks are not lost if an update is preempted.
 
   it('calls componentWillUnmount after a deletion, even if nested', () => {
     const ops = [];
@@ -1240,7 +1240,7 @@ describe('ReactIncrementalSideEffects', () => {
     ]);
   });
 
-  // TODO: Test that mounts, updates, refs, unmounts and deletions happen in the
+  // REACT: Test that mounts, updates, refs, unmounts and deletions happen in the
   // expected way for aborted and resumed render life-cycles.
 
   it('supports string refs', () => {

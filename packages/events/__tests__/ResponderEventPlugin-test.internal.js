@@ -335,7 +335,7 @@ const CHILD_HOST_NODE = {};
 const CHILD_HOST_NODE2 = {};
 
 // These intentionally look like Fibers. ReactTreeTraversal depends on their field names.
-// TODO: we could test this with regular DOM nodes (and real fibers) instead.
+// REACT: we could test this with regular DOM nodes (and real fibers) instead.
 const GRANDPARENT_INST = {
   return: null,
   tag: HostComponent,

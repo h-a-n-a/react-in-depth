@@ -77,7 +77,7 @@ import {validateProperties as validateARIAProperties} from '../shared/ReactDOMIn
 import {validateProperties as validateInputProperties} from '../shared/ReactDOMNullInputValuePropHook';
 import {validateProperties as validateUnknownProperties} from '../shared/ReactDOMUnknownPropertyHook';
 
-// Based on reading the React.Children implementation. TODO: type this somewhere?
+// Based on reading the React.Children implementation. REACT: type this somewhere?
 type ReactNode = string | number | ReactElement;
 type FlatReactChildren = Array<null | ReactNode>;
 type toArrayType = (children: mixed) => FlatReactChildren;
@@ -691,7 +691,7 @@ class ReactDOMServerRenderer {
   threadID: ThreadID;
   stack: Array<Frame>;
   exhausted: boolean;
-  // TODO: type this more strictly:
+  // REACT: type this more strictly:
   currentSelectValue: any;
   previousWasTextNode: boolean;
   makeStaticMarkup: boolean;

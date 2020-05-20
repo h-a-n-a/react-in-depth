@@ -1011,12 +1011,14 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
       }
       // This fiber completed.
       // Remember we're completing this unit so we can find a boundary if it fails.
-      // 非 profiler 的情况下，completeWork 中只有 suspense 会返回 fiber，其他则只返回 null并处理当前 fiber
+      // 无论 profiler 是开启还是关闭，completeWork 中只有 suspense 会返回 fiber，其他则只更新当前 fiber（可以参考 case: HostComponent）并返回 null
       nextUnitOfWork = workInProgress;
       if (enableProfilerTimer) {
         if (workInProgress.mode & ProfileMode) {
           startProfilerTimer(workInProgress);
         }
+        // completeWork 会从新旧 props、ref 的对比中确定需要改变的内容给 workInProgress 打上相应 Update/Ref 标签
+        // 这些标记会在 commit 中被更新到 dom 节点上
         nextUnitOfWork = completeWork(
           current,
           workInProgress,
@@ -1082,7 +1084,8 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         // Skip both NoWork and PerformedWork tags when creating the effect list.
         // PerformedWork effect is read by React DevTools but shouldn't be committed.
 
-        // 如果当前有 effect 要处理，则把自己也放在 effect list 中
+        // 在 completeWork 中，我们可能会给自己打上了相应的标签，例如 Update/Ref，因此我们在这里可以进行 effect 的处理
+        // effectTag > 1 ，表示自己有 effect 要处理，则把自己也放在 effect list 中
         if (effectTag > PerformedWork) {
           // 把当前层自身接在父级后面，在这之前已经有子级的 effect，因此当前层的 effect 其实是接在当前层子 effect 的后面
           if (returnFiber.lastEffect !== null) {
@@ -1198,6 +1201,7 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
   // See if beginning this work spawns more work.
   startWorkTimer(workInProgress);
   if (__DEV__) {
+    // dev 模式下标记当前 fiber（current = fiber）
     setCurrentFiber(workInProgress);
   }
 
@@ -1214,6 +1218,7 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
       startProfilerTimer(workInProgress);
     }
     next = beginWork(current, workInProgress, nextRenderExpirationTime);
+    // 完成 beginWork 后，将新的 props 覆盖到 memoizedProps 之上，为下次的 diff 做准备
     workInProgress.memoizedProps = workInProgress.pendingProps;
 
     if (workInProgress.mode & ProfileMode) {
@@ -1227,6 +1232,7 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
   }
 
   if (__DEV__) {
+    // dev 模式下取消标记当前 fiber（current = null）
     resetCurrentFiber();
     if (isReplayingFailedUnitOfWork) {
       // Currently replaying a failed unit of work. This should be unreachable,

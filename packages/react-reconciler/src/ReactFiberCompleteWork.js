@@ -107,6 +107,7 @@ let updateHostComponent;
 let updateHostText;
 if (supportsMutation) {
   // Mutation mode
+  // 支持更新
 
   appendAllChildren = function(
     parent: Instance,
@@ -146,6 +147,8 @@ if (supportsMutation) {
   updateHostContainer = function(workInProgress: Fiber) {
     // Noop
   };
+  // 注意：completeWork中 DOM 节点更新，注意和 beginWork 中的同名函数的区别
+  // 检查 props 有无更新（包括 children ），如果有则打上标签
   updateHostComponent = function(
     current: Fiber,
     workInProgress: Fiber,
@@ -156,21 +159,32 @@ if (supportsMutation) {
     // If we have an alternate, that means this is an update and we need to
     // schedule a side-effect to do the updates.
     const oldProps = current.memoizedProps;
+    
+    // 注意点：当 props 没有变化的时候，
+    // current.memoized === current.pendingProps（即为原地复用），workInProgress.memoized === workInProgress.pendingProps
+    // 但是 current 和 workInProgress 的数据不互通，也就是说 current.memoized !== workInProgress.memoized（也不等于相对应的 pendingProps）
+
+    // props 相同则不更新
+    // (newProps 即为 workInProgress.pendingProps)
+    // TODO: 还没弄清楚什么情况下 workInProgress.pendingProps === current.memoizedProps
     if (oldProps === newProps) {
-      // In mutation mode, this is sufficient for a bailout because
+      // In mutation mode, this is sufficient for a bailout(skip) because
       // we won't touch this node even if children changed.
       return;
     }
 
-    // If we get updated because one of our children updated, we don't
-    // have newProps so we'll have to reuse them.
+    // If we get updated because one of our children updated, we don't have newProps so we'll have to reuse them.
     // REACT: Split the update API as separate for the props vs. children.
     // Even better would be if children weren't special cased at all tho.
+    // 当前 dom 节点
     const instance: Instance = workInProgress.stateNode;
     const currentHostContext = getHostContext();
     // REACT: Experiencing an error where oldProps is null. Suggests a host
     // component is hitting the resume path. Figure out why. Possibly
     // related to `hidden`.
+
+    // 当 props 有更新，则通过 prepareUpdate 返回更新内容
+    // 应该是这里：react-interpretation/packages/react-native-renderer/src/ReactFabricHostConfig.js
     const updatePayload = prepareUpdate(
       instance,
       type,
@@ -180,9 +194,11 @@ if (supportsMutation) {
       currentHostContext,
     );
     // REACT: Type this specific to this type of component.
+    // 如果是 props.children = '11' 变成了 '12'，则 updatePayload 为 ["children", "12"]。这里暂时不讨论 props 嵌套问题，可自行查看实现
     workInProgress.updateQueue = (updatePayload: any);
     // If the update payload indicates that there is a change or if there
     // is a new ref we mark this as an update. All the work is done in commitWork.
+    // updatePayload !== null 表示有更新，因此先给 effectTag 打上 update 的标签，表示将会在 commitWork 中进行更新
     if (updatePayload) {
       markUpdate(workInProgress);
     }
@@ -544,13 +560,16 @@ function completeWork(
       updateHostContainer(workInProgress);
       break;
     }
-    case HostComponent: { // 如果是 dom 节点
+    case HostComponent: { // tag 为 dom 节点
       popHostContext(workInProgress);
 
       // 拿到 rootContainer 实例，例如 mount 的节点为 div#root, 则就是这个 dom 实例
       const rootContainerInstance = getRootHostContainer();
       const type = workInProgress.type;
+      // 已经有了对应的 dom 节点
       if (current !== null && workInProgress.stateNode != null) {
+        // 更新 props（包括 children），如果之前 props === null 则创建之，并给 workInProgress.effectTag 打上 update 标签
+        // 这个 updateHostComponent 只是用来打标签而已，真正调和（增删改） current 和 workInProgress 的 vdom 是由 beginWork 分支中的 updateHostComponent 完成
         updateHostComponent(
           current,
           workInProgress,
@@ -559,6 +578,7 @@ function completeWork(
           rootContainerInstance,
         );
 
+        // 判断是否需要更新 ref
         if (current.ref !== workInProgress.ref) {
           markRef(workInProgress);
         }
@@ -594,6 +614,8 @@ function completeWork(
             markUpdate(workInProgress);
           }
         } else {
+          // 初次创建节点：
+          // 没有对应的节点则创建这个节点（createInstance），并调用 appendChildNode 创建所有子孙节点（appendAllChildren）
           let instance = createInstance(
             type,
             newProps,
@@ -601,7 +623,6 @@ function completeWork(
             currentHostContext,
             workInProgress,
           );
-
           appendAllChildren(instance, workInProgress, false, false);
 
           // Certain renderers require commit-time effects for initial mount.

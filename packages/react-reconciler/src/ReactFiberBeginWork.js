@@ -941,16 +941,19 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
 }
 
 function updateHostComponent(current, workInProgress, renderExpirationTime) {
+  // TODO: 弄明白 context 是什么
   pushHostContext(workInProgress);
 
   if (current === null) {
     tryToClaimNextHydratableInstance(workInProgress);
   }
 
-  const type = workInProgress.type;
+  // 标签类型如：span
+  const type = workInProgress.type; 
   const nextProps = workInProgress.pendingProps;
   const prevProps = current !== null ? current.memoizedProps : null;
 
+  // 新的 children
   let nextChildren = nextProps.children;
   const isDirectTextChild = shouldSetTextContent(type, nextProps);
 
@@ -979,6 +982,7 @@ function updateHostComponent(current, workInProgress, renderExpirationTime) {
     return null;
   }
 
+  // TODO: 等待阅读，这个应该是新旧 vdom 的删除增加
   reconcileChildren(
     current,
     workInProgress,
@@ -2248,7 +2252,9 @@ function beginWork(
     case HostRoot:
       return updateHostRoot(current, workInProgress, renderExpirationTime);
     case HostComponent:
-      // TODO: beginWork 和 completeWork 中 都调用了 updateHostComponent，观察他们的区别
+      // TODO: beginWork 和 completeWork 中 都调用了 updateHostComponent，
+      // 但是是两个不同的函数，注意观察他们的区别：下面这个是用来调和（增删改） current 和 workInProgress 的 vdom，
+      // completeWork 中的同名函数 updateHostComponent 只是用来打 effectTag 标签而已，告诉 react 要 commit 的东西
       return updateHostComponent(current, workInProgress, renderExpirationTime);
     case HostText:
       return updateHostText(current, workInProgress);

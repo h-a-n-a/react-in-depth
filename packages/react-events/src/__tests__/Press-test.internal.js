@@ -592,7 +592,6 @@ describe('Event responder: Press', () => {
     });
   });
 
-  // TODO
   //describe('`onPress*` with movement', () => {
   //describe('within bounds of hit rect', () => {
   /** ┌──────────────────┐

@@ -123,6 +123,7 @@ if (supportsMutation) {
     let node = workInProgress.child;
     while (node !== null) {
       if (node.tag === HostComponent || node.tag === HostText) {
+        // 就是 parent.appendChild(node.stateNode)
         appendInitialChild(parent, node.stateNode);
       } else if (node.tag === HostPortal) {
         // If we have a portal child, then we don't want to traverse
@@ -617,7 +618,7 @@ function completeWork(
             markUpdate(workInProgress);
           }
         } else {
-          // 初次创建节点：
+          // 初次创建 DOM 节点并赋值 workInProgress.stateNode：
           // 没有对应的节点则创建这个 DOM 节点（createInstance），并调用 appendChildNode 创建所有子孙 DOM 节点（appendAllChildren）
           let instance = createInstance(
             type,

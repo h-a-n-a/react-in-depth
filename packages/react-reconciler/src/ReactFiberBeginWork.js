@@ -869,7 +869,7 @@ function pushHostRootContext(workInProgress) {
 }
 
 function updateHostRoot(current, workInProgress, renderExpirationTime) {
-  // 在访问到 HostRoot 的时候会把 rootInstanceStackCursor 指向当前根 dom 节点
+  // 在访问到 HostRoot 的时候会把 rootInstanceStackCursor 指向当前根 dom 节点，例如 div#root
   // 在之后的 的调用中 getRootHostContainer() 我们可以轻易地访问到当前的 根 dom 节点
   pushHostRootContext(workInProgress);
   const updateQueue = workInProgress.updateQueue;

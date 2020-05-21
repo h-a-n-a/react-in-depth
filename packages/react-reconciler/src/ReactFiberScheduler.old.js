@@ -1019,6 +1019,7 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         }
         // completeWork 会从新旧 props、ref 的对比中确定需要改变的内容给 workInProgress 打上相应 Update/Ref 标签
         // 这些标记会在 commit 中被更新到 dom 节点上
+        // **如果是从来没有创建 DOM 的 HostComponent 会直接创建 DOM 节点，HostText 则会创建 text 节点。最后赋值 workInProgress.stateNode **
         nextUnitOfWork = completeWork(
           current,
           workInProgress,

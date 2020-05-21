@@ -2255,9 +2255,10 @@ function beginWork(
     case HostRoot:
       return updateHostRoot(current, workInProgress, renderExpirationTime);
     case HostComponent:
-      // TODO: beginWork 和 completeWork 中 都调用了 updateHostComponent，
+      // beginWork 和 completeWork 中 都调用了 updateHostComponent，
       // 但是是两个不同的函数，注意观察他们的区别：下面这个是用来调和（增删改） current 和 workInProgress 的 vdom，
-      // completeWork 中的同名函数 updateHostComponent 只是用来打 effectTag 标签而已，告诉 react 要 commit 的东西
+      // completeWork 中的同名函数 updateHostComponent 中则是给已经存在DOM节点（stateNode）元素更新打上 effectTag 标签，告诉 react 要 commit 的东西， 并
+      // 为不存在 DOM 节点的元素创建 DOM节点并赋值给 workInProgress.stateNode
       return updateHostComponent(current, workInProgress, renderExpirationTime);
     case HostText:
       return updateHostText(current, workInProgress);

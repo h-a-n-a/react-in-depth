@@ -43,6 +43,7 @@ function requiredContext<Value>(c: Value | NoContextT): Value {
   return (c: any);
 }
 
+// 返回当前
 function getRootHostContainer(): Container {
   const rootInstance = requiredContext(rootInstanceStackCursor.current);
   return rootInstance;

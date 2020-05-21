@@ -276,6 +276,8 @@ function ensureListeningTo(
   listenTo(registrationName, doc);
 }
 
+// 通过 host root dom 节点找对应的 document 对象
+// 当这个 dom 节点已经是 document 则直接返回 document，否则则调用 xxx.ownerDocument 找到它对应的 document 对象
 function getOwnerDocumentFromRootContainer(
   rootContainerElement: Element | Document,
 ): Document {
@@ -384,6 +386,7 @@ function updateDOMProperties(
   }
 }
 
+// 使用 rootContainerElement 对应 document 创建一个 DOM 节点（document.createElement / ~NS for SVGs）
 export function createElement(
   type: string,
   props: Object,
@@ -394,15 +397,25 @@ export function createElement(
 
   // We create tags in the namespace of their parent container, except HTML
   // tags get no namespace.
+  // 通过 host root dom 找到对应 document 对象
   const ownerDocument: Document = getOwnerDocumentFromRootContainer(
-    rootContainerElement,
+    rootContainerElement, // DOM 节点，例如：div#root
   );
   let domElement: Element;
   let namespaceURI = parentNamespace;
+
+  // REACT 预制了三种 namespaceURI：
+
+  // HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
+  // MATH_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
+  // SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+
   if (namespaceURI === HTML_NAMESPACE) {
     namespaceURI = getIntrinsicNamespace(type);
   }
+
   if (namespaceURI === HTML_NAMESPACE) {
+    // 除了 SVG/MATH 等直接可以用 createElement 创建的元素
     if (__DEV__) {
       isCustomComponentTag = isCustomComponent(type, props);
       // Should this check be gated by parent namespace? Not sure we want to
@@ -422,10 +435,18 @@ export function createElement(
       const div = ownerDocument.createElement('div');
       div.innerHTML = '<script><' + '/script>'; // eslint-disable-line
       // This is guaranteed to yield a script element.
+
+      // 这个时候为 <div> <script></script> </div>
+      // 下一步则是从 div 中把 script 提取出来
       const firstChild = ((div.firstChild: any): HTMLScriptElement);
-      domElement = div.removeChild(firstChild);
+
+      // div.removeChild(xxx) 会把 xxx 作为返回值
+      domElement = div.removeChild(firstChild); 
     } else if (typeof props.is === 'string') {
       // $FlowIssue `createElement` should be updated for Web Components
+
+      // WebComponent 中使用 is 参数创建一个被 customElements.define(props.is) 定义过的相同元素实例
+      // 有点绕，可以看这里：https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createElement
       domElement = ownerDocument.createElement(type, {is: props.is});
     } else {
       // Separate else branch instead of using `props.is || undefined` above because of a Firefox bug.
@@ -454,6 +475,7 @@ export function createElement(
       }
     }
   } else {
+    // SVG/MATH （需要 namespaceURI）的元素
     domElement = ownerDocument.createElementNS(namespaceURI, type);
   }
 

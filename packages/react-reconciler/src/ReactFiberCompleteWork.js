@@ -51,6 +51,9 @@ import {
 } from 'shared/ReactSideEffectTags';
 import invariant from 'shared/invariant';
 
+// 此处文件的引用会在 rollup 和 flow 中被判断为不同 renderer 的引用：ReactFiberHostConfig.XXX.js，其中 XXX 表示不同环境
+// react-interpretation/packages/react-reconciler/src/forks/ReactFiberHostConfig.dom.js
+// 浏览器环境下下方可以替换为：react-interpretation/packages/react-dom/src/client/ReactDOMHostConfig.js
 import {
   createInstance,
   createTextInstance,
@@ -566,7 +569,7 @@ function completeWork(
       // 拿到 rootContainer 实例，例如 mount 的节点为 div#root, 则就是这个 dom 实例
       const rootContainerInstance = getRootHostContainer();
       const type = workInProgress.type;
-      // 已经有了对应的 dom 节点
+      // 已经有了对应的 dom 节点，则不需要创建 DOM 节点，否则在这一步就已经创建了 DOM 节点（可以参考 else 中的逻辑）
       if (current !== null && workInProgress.stateNode != null) {
         // 更新 props（包括 children），如果之前 props === null 则创建之，并给 workInProgress.effectTag 打上 update 标签
         // 这个 updateHostComponent 只是用来打标签而已，真正调和（增删改） current 和 workInProgress 的 vdom 是由 beginWork 分支中的 updateHostComponent 完成
@@ -615,7 +618,7 @@ function completeWork(
           }
         } else {
           // 初次创建节点：
-          // 没有对应的节点则创建这个节点（createInstance），并调用 appendChildNode 创建所有子孙节点（appendAllChildren）
+          // 没有对应的节点则创建这个 DOM 节点（createInstance），并调用 appendChildNode 创建所有子孙 DOM 节点（appendAllChildren）
           let instance = createInstance(
             type,
             newProps,

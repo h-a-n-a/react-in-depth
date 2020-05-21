@@ -864,10 +864,13 @@ function pushHostRootContext(workInProgress) {
     // Should always be set
     pushTopLevelContextObject(workInProgress, root.context, false);
   }
+  // DOM 环境参考：react-interpretation/packages/react-reconciler/src/ReactFiberHostContext.js
   pushHostContainer(workInProgress, root.containerInfo);
 }
 
 function updateHostRoot(current, workInProgress, renderExpirationTime) {
+  // 在访问到 HostRoot 的时候会把 rootInstanceStackCursor 指向当前根 dom 节点
+  // 在之后的 的调用中 getRootHostContainer() 我们可以轻易地访问到当前的 根 dom 节点
   pushHostRootContext(workInProgress);
   const updateQueue = workInProgress.updateQueue;
   invariant(
@@ -941,7 +944,7 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
 }
 
 function updateHostComponent(current, workInProgress, renderExpirationTime) {
-  // TODO: 弄明白 context 是什么
+  // TODO: 弄明白 context 
   pushHostContext(workInProgress);
 
   if (current === null) {

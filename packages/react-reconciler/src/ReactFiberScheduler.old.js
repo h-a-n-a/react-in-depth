@@ -1261,12 +1261,15 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
   return next;
 }
 
+// isYieldy：
+// yieldy 表示可被中断的 async 操作（reconcile 阶段）
+// !yieldy 表示同步的操作，不可打断
 function workLoop(isYieldy) {
   // 对 nextUnitOfWork 循环进行判断，直到没有 nextUnitOfWork
+  // 一开始进来 nextUnitOfWork 是 root，每次执行 performUnitOfWork 后
+  // 都会生成下一个工作单元
   if (!isYieldy) {
     // Flush work without yielding
-    // 一开始进来 nextUnitOfWork 是 root，每次执行 performUnitOfWork 后
-    // 都会生成下一个工作单元
     while (nextUnitOfWork !== null) {
       nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
     }
@@ -1280,6 +1283,8 @@ function workLoop(isYieldy) {
 
 // 开始渲染整颗树，这个函数在异步模式下可能会被多次执行，因为在异步模式下
 // 可以打断任务。打断也就意味着每次都得回到 root 再开始从上往下循环
+// root 为 rootContainer，即为 fiberRoot.stateNode，参考：
+// https://github.com/facebook/react/blob/0dc0ddc1ef5f90fe48b58f1a1ba753757961fc74/packages/react-reconciler/src/ReactFiberRoot.js#L31
 function renderRoot(root: FiberRoot, isYieldy: boolean): void {
   invariant(
     !isWorking,
@@ -1480,6 +1485,8 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
     // in the current frame. Yield back to the renderer. Unless we're
     // interrupted by a higher priority update, we'll continue later from where
     // we left off.
+
+    // 如果还有 nextUnitOfWork，但是已经跳出了 workLoop 循环来到了这里，就说明还没有遍历回到 root 节点，下一次要重新从 root 开始
     const didCompleteRoot = false;
     stopWorkLoopTimer(interruptedBy, didCompleteRoot);
     interruptedBy = null;
@@ -1487,12 +1494,15 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
     return;
   }
 
+  // 如果 nextUnitOfWork === null，则说明已经完成了整颗树的遍历
   // We completed the whole tree.
   const didCompleteRoot = true;
   stopWorkLoopTimer(interruptedBy, didCompleteRoot);
+
+  // root 已经被遍历完成了，那说明已经建立了 root 的 workInProgress 树，如果没有成功建立，则下方会进行报错
   const rootWorkInProgress = root.current.alternate;
   invariant(
-    rootWorkInProgress !== null,
+    rootWorkInProgress !== null, // expect 的值
     'Finished root should have a work-in-progress. This error is likely ' +
       'caused by a bug in React. Please file an issue.',
   );
@@ -1583,6 +1593,7 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
   }
 
   // Ready to commit.
+  // 将 rootWorkInProgress（root.current.alternate）树赋值给 root.finishedWork（root 为 rootContainer）
   onComplete(root, rootWorkInProgress, expirationTime);
 }
 
@@ -2153,7 +2164,9 @@ function onComplete(
   expirationTime: ExpirationTime,
 ) {
   root.pendingCommitExpirationTime = expirationTime;
-  root.finishedWork = finishedWork;
+
+  // 已经完成遍历的 workInProgress 树
+  root.finishedWork = finishedWork; 
 }
 
 function onSuspend(
@@ -2575,8 +2588,10 @@ function performWorkOnRoot(
         // $FlowFixMe Complains noTimeout is not a TimeoutID, despite the check above
         cancelTimeout(timeoutHandle);
       }
-      // 否则就去渲染成 DOM
+      // 否则去完成 renderRoot 的操作（没有实体 DOM 的节点则生成实体 DOM，已经有 DOM 的节点则去策划要怎么更新并打上 tag）
       renderRoot(root, isYieldy);
+      // 拿到已经 render 完成的 rootWorkInProgress 树
+      // 注：这里的 render 完成指的是 reconcile 阶段完成，还没有 commit 到页面上去
       finishedWork = root.finishedWork;
       if (finishedWork !== null) {
         // We've completed the root. Commit it.
@@ -2626,6 +2641,8 @@ function completeRoot(
   expirationTime: ExpirationTime,
 ): void {
   // Check if there's a batch that matches this expiration time.
+
+  // TODO: 第一个批处理任务，搞明白什么是 batch
   const firstBatch = root.firstBatch;
   if (firstBatch !== null && firstBatch._expirationTime >= expirationTime) {
     if (completedBatches === null) {
@@ -2643,6 +2660,7 @@ function completeRoot(
   }
 
   // Commit the root.
+  // 在 commitRoot 之前，先给 finishedWork 标记为 null
   root.finishedWork = null;
 
   // Check if this is a nested update (a sync update scheduled during the

@@ -15,6 +15,7 @@ export type StackCursor<T> = {
   current: T,
 };
 
+// valueStack 存放了每一层级的数据并且是单例的，通过 push 和 pop 来控制数据的层级关系
 const valueStack: Array<any> = [];
 
 let fiberStack: Array<Fiber | null>;
@@ -35,6 +36,7 @@ function isEmpty(): boolean {
   return index === -1;
 }
 
+// 把当前 valueStack 中指向的 value 赋值给 cursor.current，然后给 valueStack 中的指向的这个值赋值 null，并将 index 向前移动一位
 function pop<T>(cursor: StackCursor<T>, fiber: Fiber): void {
   if (index < 0) {
     if (__DEV__) {
@@ -60,6 +62,7 @@ function pop<T>(cursor: StackCursor<T>, fiber: Fiber): void {
   index--;
 }
 
+// 指针向前移动一位，将当前 cursor.current 赋值给 valueStack[移动后指针位置] ，并将 cursor.current 赋予 value
 function push<T>(cursor: StackCursor<T>, value: T, fiber: Fiber): void {
   index++;
 

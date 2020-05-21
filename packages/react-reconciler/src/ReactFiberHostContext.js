@@ -24,12 +24,17 @@ import {createCursor, push, pop} from './ReactFiberStack';
 declare class NoContextT {}
 const NO_CONTEXT: NoContextT = ({}: any);
 
+// 存放了当前 namespaceURI 等信息
 let contextStackCursor: StackCursor<HostContext | NoContextT> = createCursor(
   NO_CONTEXT,
 );
+
+// 存放当前 fiber 节点信息
 let contextFiberStackCursor: StackCursor<Fiber | NoContextT> = createCursor(
   NO_CONTEXT,
 );
+
+// 存放当前 root container DOM 节点信息，如 div#root
 let rootInstanceStackCursor: StackCursor<Container | NoContextT> = createCursor(
   NO_CONTEXT,
 );
@@ -69,6 +74,7 @@ function pushHostContainer(fiber: Fiber, nextRootInstance: Container) {
   push(contextStackCursor, nextRootContext, fiber);
 }
 
+// 清理现场
 function popHostContainer(fiber: Fiber) {
   pop(contextStackCursor, fiber);
   pop(contextFiberStackCursor, fiber);

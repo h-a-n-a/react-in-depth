@@ -108,9 +108,10 @@ let appendAllChildren;
 let updateHostContainer;
 let updateHostComponent;
 let updateHostText;
+
+// TODO: 弄明白三个种情况 mutation / persistence / 除了这前面两种的情况
 if (supportsMutation) {
   // Mutation mode
-  // 支持更新
 
   appendAllChildren = function(
     parent: Instance,
@@ -150,6 +151,7 @@ if (supportsMutation) {
 
   updateHostContainer = function(workInProgress: Fiber) {
     // Noop
+    // HostContainer，也就是 
   };
   // 注意：completeWork中 DOM 节点更新，注意和 beginWork 中的同名函数的区别
   // 检查 props 有无更新（包括 children ），如果有则打上标签
@@ -548,6 +550,9 @@ function completeWork(
     case HostRoot: {
       popHostContainer(workInProgress);
       popTopLevelLegacyContextObject(workInProgress);
+      // div#root 的 fiber 节点，可以通过 div#root._reactRootContainer._internalRoot 获取到
+      // 这个 fiber 节点的 stateNode 对应的是 HostContainer，他的数据结构可参考：
+      // https://github.com/facebook/react/blob/0dc0ddc1ef5f90fe48b58f1a1ba753757961fc74/packages/react-reconciler/src/ReactFiberRoot.js#L31
       const fiberRoot = (workInProgress.stateNode: FiberRoot);
       if (fiberRoot.pendingContext) {
         fiberRoot.context = fiberRoot.pendingContext;
@@ -561,7 +566,7 @@ function completeWork(
         // REACT: Delete this when we delete isMounted and findDOMNode.
         workInProgress.effectTag &= ~Placement;
       }
-      updateHostContainer(workInProgress);
+      updateHostContainer(workInProgress); // 在非 persistence 模式下为 noop
       break;
     }
     case HostComponent: { // tag 为 dom 节点

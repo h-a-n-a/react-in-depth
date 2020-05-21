@@ -388,7 +388,9 @@ function resetStack() {
   if (nextUnitOfWork !== null) {
     // 往上找 fiber 节点
     let interruptedWork = nextUnitOfWork.return;
-    // 如果存在父节点的话，就清掉父节点的 valueStack
+    // 如果存在父节点的话，就清掉 valueStack（是单例的）对应的父节点（interruptedWork）的数据
+    // TODO: 阅读 valueStack 相关内容
+    // 参考这里：https://react.jokcy.me/book/features/context.html
     // valueStack 因为之前代码里没见过，所以去网上查了点资料
     // 发现这个数组应该是用来存储数据的
     // 这个做法应该是为了重头开始一个新的任务。因为打断一个任务的时候
@@ -1051,6 +1053,8 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         return nextUnitOfWork;
       }
 
+      // 如果没有 returnFiber，说明我们已经到了 HostRoot，不需要再向上方节点归并 effect 了，这个时候我们只需要读取 firstEffect 并一直遍历 nextEffect 到结尾，
+      // 就可以 commit 更新了
       if (
         returnFiber !== null &&
         // Do not append effects to parents if a sibling failed to complete
@@ -1112,7 +1116,7 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
         workInProgress = returnFiber;
         continue;
       } else {
-        // We've reached the root.
+        // We've reached the root.(HostRoot)
         return null;
       }
     } else {
@@ -1299,10 +1303,10 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
     nextUnitOfWork === null
   ) {
     // Reset the stack and start working from the root.
-    resetStack();
+    resetStack(); // 重置了一堆变量，包括了 nextUnitOfWork
     nextRoot = root;
     nextRenderExpirationTime = expirationTime;
-    // 获取下一个需要工作的单元
+    // 从 current 树 创建一份 workInProgress 树用于 reconciliation，并返回下一个需要工作的单元（nextUnitOfWork）
     nextUnitOfWork = createWorkInProgress(
       nextRoot.current,
       null,
@@ -1368,7 +1372,7 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
 
   do {
     try {
-      // 循环更新节点
+      // TODO: 补全注释，循环更新节点：从 xxxx（需要确认一下是从哪里开始更新的） 一直更新到下，再返回到 HostRoot 然后跳出循环
       workLoop(isYieldy);
     } catch (thrownValue) {
       resetContextDependences();

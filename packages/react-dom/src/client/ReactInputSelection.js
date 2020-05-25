@@ -50,22 +50,31 @@ function isSameOriginFrame(iframe) {
     // Which might result in "SecurityError" DOM Exception and it is compatible to Safari.
     // https://html.spec.whatwg.org/multipage/browsers.html#integration-with-idl
 
+    // 判断是否同源的方法：如果能拿到 iframe window 上的 location.href 那就说明是同源，否则不是。
+    // 注：
+    // 获取 iframe window 的方法有两种：iframe.contentDocument.defaultView 或 iframe.contentWindow 
+    // 之所以这里用的第二中是因为第一种在 safari 中会在 console 中直接打印出 error（应该是 try catch 也没用）
+    // ，第二种虽然会输出 DOM Exception 但是可以被 catch 到（我是猜的）
     return typeof iframe.contentWindow.location.href === 'string';
   } catch (err) {
     return false;
   }
 }
 
+// 寻找聚焦元素：直接看下面代码
 function getActiveElementDeep() {
   let win = window;
-  let element = getActiveElement();
+  let element = getActiveElement(); // 获取当前获取到焦点的元素，否则返回 document.body
+
+  // 如果聚焦元素*是* iframe 则找这个 iframe 内部的聚焦元素，一直循环下去
+  // 如果聚焦元素*不是* iframe 则返回这个聚焦元素
   while (element instanceof win.HTMLIFrameElement) {
     if (isSameOriginFrame(element)) {
       win = element.contentWindow;
     } else {
       return element;
     }
-    element = getActiveElement(win.document);
+    element = getActiveElement(win.document); 
   }
   return element;
 }
@@ -97,6 +106,7 @@ export function hasSelectionCapabilities(elem) {
   );
 }
 
+// 找到聚焦元素和聚焦元素中被选中的内容的 range
 export function getSelectionInformation() {
   const focusedElem = getActiveElementDeep();
   return {
@@ -161,8 +171,8 @@ export function getSelection(input) {
   if ('selectionStart' in input) {
     // Modern browser with input or textarea.
     selection = {
-      start: input.selectionStart,
-      end: input.selectionEnd,
+      start: input.selectionStart, // 选中的开始位置
+      end: input.selectionEnd, // 选中的结束位置
     };
   } else {
     // Content editable or old IE textarea.

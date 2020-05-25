@@ -680,7 +680,9 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
   // Reset this to null before calling lifecycles
   ReactCurrentOwner.current = null;
 
+  // 整棵树的第一个 effect
   let firstEffect;
+  // 当自己也有 effect 的时候，把自己的 effect 插入 effect list 的末端（这段实现在 completeUnitOfWork 中也有）
   if (finishedWork.effectTag > PerformedWork) {
     // A fiber's effect list consists only of its children, not itself. So if
     // the root has an effect, we need to add it to the end of the list. The
@@ -697,6 +699,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     firstEffect = finishedWork.firstEffect;
   }
 
+  // root.containerInfo 为根节点 div#root
   prepareForCommit(root.containerInfo);
 
   // Invoke instances of getSnapshotBeforeUpdate before mutation.
@@ -2588,7 +2591,7 @@ function performWorkOnRoot(
         // $FlowFixMe Complains noTimeout is not a TimeoutID, despite the check above
         cancelTimeout(timeoutHandle);
       }
-      // 否则去完成 renderRoot 的操作（没有实体 DOM 的节点则生成实体 DOM，已经有 DOM 的节点则去策划要怎么更新并打上 tag）
+      // 否则去完成 renderRoot 的操作（即 workLoop，没有实体 DOM 的节点则生成实体 DOM，已经有 DOM 的节点则去策划要怎么更新并打上 tag）
       renderRoot(root, isYieldy);
       // 拿到已经 render 完成的 rootWorkInProgress 树
       // 注：这里的 render 完成指的是 reconcile 阶段完成，还没有 commit 到页面上去

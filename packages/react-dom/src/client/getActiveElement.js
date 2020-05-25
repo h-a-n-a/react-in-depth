@@ -7,6 +7,7 @@
  * @flow
  */
 
+ // 获取文档中当前获取焦点的元素，如果没有则返回 document.body
 export default function getActiveElement(doc: ?Document): ?Element {
   doc = doc || (typeof document !== 'undefined' ? document : undefined);
   if (typeof doc === 'undefined') {

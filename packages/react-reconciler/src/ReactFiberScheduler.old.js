@@ -649,6 +649,7 @@ function flushPassiveEffects() {
   return didFlushEffects;
 }
 
+// lifeCycleMethods 的调用，dom 的修改全在这里了
 function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
   isWorking = true;
   isCommitting = true;
@@ -791,7 +792,13 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
   }
   stopCommitHostEffectsTimer();
 
+  // commit 完之后恢复聚焦元素，以及聚焦元素选择range
   resetAfterCommit(root.containerInfo);
+
+  // 大致意思：commit 分两个阶段：
+  // 第一个阶段是调用 getSnapshotBeforeUpdate，并更新到 dom上。
+  // 第二个阶段是调用其他 lifeCyclesMethods。由于 componentWillUnmount 需要调用之前 current 树上对应 node 的方法，
+  // 因此在没有完成第一阶段就把 finishedWork 赋值给 current 是不对的
 
   // The work-in-progress tree is now the current tree. This must come after
   // the first pass of the commit phase, so that the previous tree is still
@@ -811,7 +818,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     if (__DEV__) {
       invokeGuardedCallback(
         null,
-        commitAllLifeCycles,
+        commitAllLifeCycles, 
         null,
         root,
         committedExpirationTime,
@@ -822,6 +829,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
       }
     } else {
       try {
+        // 调用其他 lifeCycle 方法，例如 componentDidMount/componentDidUpdate
         commitAllLifeCycles(root, committedExpirationTime);
       } catch (e) {
         didError = true;
@@ -2567,6 +2575,7 @@ function finishRendering() {
   }
 }
 
+// 最核心的一个函数，包括了 renderRoot 到 commit 的过程，返回到 performWork
 function performWorkOnRoot(
   root: FiberRoot,
   expirationTime: ExpirationTime,
@@ -2649,6 +2658,7 @@ function performWorkOnRoot(
   isRendering = false;
 }
 
+// 调用了 commitRoot，退出后回到 performWorkOnRoot
 function completeRoot(
   root: FiberRoot,
   finishedWork: Fiber,

@@ -859,6 +859,8 @@ function commitContainer(finishedWork: Fiber) {
   }
 }
 
+// 向上查找 HostParent
+// HostParent: tag 为 HostComponent/HostRoot/HostPortal 的 parent
 function getHostParentFiber(fiber: Fiber): Fiber {
   let parent = fiber.return;
   while (parent !== null) {
@@ -882,6 +884,7 @@ function isHostParent(fiber: Fiber): boolean {
   );
 }
 
+// 找到一个 HostSibling 作为 insertBefore 的基准点（第二个参数）
 function getHostSibling(fiber: Fiber): ?Instance {
   // We're going to search forward into the tree until we find a sibling host
   // node. Unfortunately, if multiple insertions are done in a row we have to
@@ -890,6 +893,7 @@ function getHostSibling(fiber: Fiber): ?Instance {
   let node: Fiber = fiber;
   siblings: while (true) {
     // If we didn't find anything, let's try the next sibling.
+    // 先找 sibling（往上找），如果一直找不到就返回 null
     while (node.sibling === null) {
       if (node.return === null || isHostParent(node.return)) {
         // If we pop out of the root or hit the parent the fiber we are the
@@ -898,7 +902,11 @@ function getHostSibling(fiber: Fiber): ?Instance {
       }
       node = node.return;
     }
+    // 到这里说明找到了 sibling
+
+    // 给 sibling 赋值返回节点
     node.sibling.return = node.return;
+    // 去找到的这一个 sibling
     node = node.sibling;
     while (
       node.tag !== HostComponent &&
@@ -907,6 +915,8 @@ function getHostSibling(fiber: Fiber): ?Instance {
     ) {
       // If it is not host node and, we might have a host node inside it.
       // Try to search down until we find one.
+      // ClassComponent、HostRoot、lazyComponent 等（还有一些不常见的）才会有这个标签，可以搜索“|= Placement”
+      // 然而我们要找的是 dom 节点，因此直接跳过
       if (node.effectTag & Placement) {
         // If we don't have a child, try the siblings instead.
         continue siblings;
@@ -928,6 +938,7 @@ function getHostSibling(fiber: Fiber): ?Instance {
   }
 }
 
+// ClassComponent/FunctionComponent/HostComponent/HostText等等的插入
 function commitPlacement(finishedWork: Fiber): void {
   if (!supportsMutation) {
     return;
@@ -941,16 +952,16 @@ function commitPlacement(finishedWork: Fiber): void {
   let isContainer;
 
   switch (parentFiber.tag) {
-    case HostComponent:
-      parent = parentFiber.stateNode;
+    case HostComponent: // DOM 节点 对应 fiber
+      parent = parentFiber.stateNode; // 真实 DOM 节点
       isContainer = false;
       break;
-    case HostRoot:
-      parent = parentFiber.stateNode.containerInfo;
+    case HostRoot: // 根 fiber 节点
+      parent = parentFiber.stateNode.containerInfo; // fiber Root 对应 dom 节点，例如 div#root
       isContainer = true;
       break;
-    case HostPortal:
-      parent = parentFiber.stateNode.containerInfo;
+    case HostPortal: // portal
+      parent = parentFiber.stateNode.containerInfo; // portal 的 dom 节点
       isContainer = true;
       break;
     default:
@@ -960,6 +971,7 @@ function commitPlacement(finishedWork: Fiber): void {
           'in React. Please file an issue.',
       );
   }
+
   if (parentFiber.effectTag & ContentReset) {
     // Reset the text content of the parent before doing any insertions
     resetTextContent(parent);
@@ -968,8 +980,8 @@ function commitPlacement(finishedWork: Fiber): void {
   }
 
   const before = getHostSibling(finishedWork);
-  // We only have the top Fiber that was inserted but we need to recurse down its
-  // children to find all the terminal nodes.
+  // We only have the top Fiber that was inserted but we need（因为例如 class component 或者 function component 等等其实插入的是一堆的元素，并不像 HostComponent/HostText 那样插入一次就好） 
+  // to recurse down its children to find all the terminal nodes.
   let node: Fiber = finishedWork;
   while (true) {
     if (node.tag === HostComponent || node.tag === HostText) {
@@ -981,8 +993,8 @@ function commitPlacement(finishedWork: Fiber): void {
           insertBefore(parent, stateNode, before);
         }
       } else {
-        if (isContainer) {
-          appendChildToContainer(parent, stateNode);
+        if (isContainer) { 
+          appendChildToContainer(parent, stateNode); // 例如在 div#root 下插入一个节点
         } else {
           appendChild(parent, stateNode);
         }
@@ -992,21 +1004,31 @@ function commitPlacement(finishedWork: Fiber): void {
       // down its children. Instead, we'll get insertions from each child in
       // the portal directly.
     } else if (node.child !== null) {
+      // ClassComponent / FunctionComponent 等则是找到它的 child，
+      // 因为 child 中的 stateNode 才是 dom 节点（这部分的 dom 节点已经在 completeWork 中进行创建了）
+       
+      // 建立父子联系
       node.child.return = node;
+      // 继续向下深入
       node = node.child;
       continue;
     }
     if (node === finishedWork) {
+      // 表明不是 ClassComponent 或者 FunctionComponent，因为这两者会进入 child，导致 node !== finishedWork （参考 1011 行）
+      // 因此这里可能是 HostComponent/HostText，因此已经插入完毕所以可以 return
       return;
     }
     while (node.sibling === null) {
+      // 到顶则退出
       if (node.return === null || node.return === finishedWork) {
         return;
       }
+
+      // 否则则回溯
       node = node.return;
     }
     node.sibling.return = node.return;
-    node = node.sibling;
+    node = node.sibling; // 到下一个 sibling，因此顺序和 append 是一样的，所以第一个 if 中才可以进行 append
   }
 }
 

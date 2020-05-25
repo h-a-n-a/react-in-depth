@@ -467,11 +467,14 @@ export function appendChild(
   parentInstance.appendChild(child);
 }
 
+// 区分值 comment node 还是其他类型的 dom node
 export function appendChildToContainer(
   container: DOMContainer,
   child: Instance | TextInstance,
 ): void {
   let parentNode;
+  // comment 类型的 node 则需要找到它的 parentNode 再在 container 之前 insert（不是很明白为什么要这么做，直接找到 parentNode 然后 appendChild 不行吗？）
+  // 其他类型的 dom node 则直接在 container 上 appendChild
   if (container.nodeType === COMMENT_NODE) {
     parentNode = (container.parentNode: any);
     parentNode.insertBefore(child, container);

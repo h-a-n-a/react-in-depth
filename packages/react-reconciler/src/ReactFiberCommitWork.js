@@ -229,7 +229,7 @@ function safelyCallDestroy(current, destroy) {
 
 function commitBeforeMutationLifeCycles(
   current: Fiber | null,
-  finishedWork: Fiber,
+  finishedWork: Fiber, // nextEffect（workInProgress Fiber）
 ): void {
   switch (finishedWork.tag) {
     case FunctionComponent:
@@ -273,6 +273,8 @@ function commitBeforeMutationLifeCycles(
               );
             }
           }
+
+          // class component 中的 instance 即为 new ClassComponent 后的结果，因此可以调用实例或原型上的方法
           const snapshot = instance.getSnapshotBeforeUpdate(
             finishedWork.elementType === finishedWork.type
               ? prevProps

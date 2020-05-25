@@ -12,10 +12,10 @@ import type {LazyComponent, Thenable} from 'shared/ReactLazyComponent';
 import {Resolved, Rejected, Pending} from 'shared/ReactLazyComponent';
 import warning from 'shared/warning';
 
-export function resolveDefaultProps(Component: any, baseProps: Object): Object {
+export function resolveDefaultProps(Component: any,/*  prevProps */ baseProps: Object ): Object {
   if (Component && Component.defaultProps) {
     // Resolve default props. Taken from ReactElement
-    const props = Object.assign({}, baseProps);
+    const props = Object.assign({}, baseProps); // 浅拷贝
     const defaultProps = Component.defaultProps;
     for (let propName in defaultProps) {
       if (props[propName] === undefined) {

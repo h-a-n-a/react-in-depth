@@ -438,9 +438,15 @@ function commitAllHostEffects() {
     // updates, and deletions. To avoid needing to add a case for every
     // possible bitmap value, we remove the secondary effects from the
     // effect tag and switch on that value.
+    // Placement 或 Update 或 Deletion 为 primary effect
+    // 只用来判断是否为它们其中的一种，并且赋值这一种 effect（例如 Placement）给 primaryEffectTag
     let primaryEffectTag = effectTag & (Placement | Update | Deletion);
+
+    // 下面的都是 DOM 操作
     switch (primaryEffectTag) {
+      // 添加节点
       case Placement: {
+        // 插入之后调用 componentDidMount
         commitPlacement(nextEffect);
         // Clear the "placement" from effect tag so that we know that this is inserted, before
         // any life-cycles like componentDidMount gets called.
@@ -450,6 +456,7 @@ function commitAllHostEffects() {
         nextEffect.effectTag &= ~Placement;
         break;
       }
+      // 替换并更新
       case PlacementAndUpdate: {
         // Placement
         commitPlacement(nextEffect);
@@ -468,6 +475,7 @@ function commitAllHostEffects() {
         break;
       }
       case Deletion: {
+        // 在删除 node 之前调用 componentWillUnmount
         commitDeletion(nextEffect);
         break;
       }
@@ -480,6 +488,7 @@ function commitAllHostEffects() {
   }
 }
 
+// 遍历 effect list，调用 getSnapshotBeforeUpdate
 function commitBeforeMutationLifecycles() {
   while (nextEffect !== null) {
     if (__DEV__) {
@@ -489,7 +498,8 @@ function commitBeforeMutationLifecycles() {
     const effectTag = nextEffect.effectTag;
     if (effectTag & Snapshot) {
       recordEffect();
-      const current = nextEffect.alternate;
+      // nextEffect 为 workInProgress 树的下一个 effect
+      const current = nextEffect.alternate; 
       commitBeforeMutationLifeCycles(current, nextEffect);
     }
 
@@ -699,7 +709,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     firstEffect = finishedWork.firstEffect;
   }
 
-  // root.containerInfo 为根节点 div#root
+  // 准备 commit，在 commit 前存一下聚焦元素，以及聚焦元素选择的 range 等等信息。等待 commit 之后恢复（resetAfterCommit）
   prepareForCommit(root.containerInfo);
 
   // Invoke instances of getSnapshotBeforeUpdate before mutation.
@@ -716,7 +726,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
       }
     } else {
       try {
-        commitBeforeMutationLifecycles();
+        commitBeforeMutationLifecycles(); // getSnapshotBeforeUpdate
       } catch (e) {
         didError = true;
         error = e;
@@ -759,7 +769,8 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
       }
     } else {
       try {
-        commitAllHostEffects();
+        // 浏览器环境则是 DOM 的插入、更新、删除
+        commitAllHostEffects(); 
       } catch (e) {
         didError = true;
         error = e;

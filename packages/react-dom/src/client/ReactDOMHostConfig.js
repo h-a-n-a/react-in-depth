@@ -251,6 +251,7 @@ export function getPublicInstance(instance: Instance): * {
   return instance;
 }
 
+// 在 commit 前备份 focus 元素信息等等，便于在 commit 后恢复（resetAfterCommit）
 export function prepareForCommit(containerInfo: Container): void {
   eventsEnabled = ReactBrowserEventEmitterIsEnabled();
   selectionInformation = getSelectionInformation();

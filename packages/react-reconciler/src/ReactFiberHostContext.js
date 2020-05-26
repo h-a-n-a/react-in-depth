@@ -24,7 +24,7 @@ import {createCursor, push, pop} from './ReactFiberStack';
 declare class NoContextT {}
 const NO_CONTEXT: NoContextT = ({}: any);
 
-// 存放了当前 namespaceURI 等信息
+// 存放例如 namespaceURI
 let contextStackCursor: StackCursor<HostContext | NoContextT> = createCursor(
   NO_CONTEXT,
 );
@@ -54,6 +54,11 @@ function getRootHostContainer(): Container {
   return rootInstance;
 }
 
+/**
+ * 对于 HostRoot 和 Portal 他们会有挂载节点，所以会有container
+ * @param {*} fiber hostContainer 的 fiber节点
+ * @param {*} nextRootInstance root 的 dom 节点，例如 div#root
+ */
 function pushHostContainer(fiber: Fiber, nextRootInstance: Container) {
   // Push current root instance onto the stack;
   // This allows us to reset root when portals are popped.

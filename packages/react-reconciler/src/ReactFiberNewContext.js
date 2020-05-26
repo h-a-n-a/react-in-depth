@@ -53,6 +53,19 @@ if (__DEV__) {
   rendererSigil = {};
 }
 
+/**
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ * 新版 contextProvider
+ */
+
 let currentlyRenderingFiber: Fiber | null = null;
 let lastContextDependency: ContextDependency<mixed> | null = null;
 let lastContextWithAllBitsObserved: ReactContext<any> | null = null;

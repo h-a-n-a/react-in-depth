@@ -249,6 +249,7 @@ function checkShouldComponentUpdate(
   nextContext,
 ) {
   const instance = workInProgress.stateNode;
+  // 如果 shouldComponentUpdate 是函数，则调用他，用他的返回结果作为 shouldUpdate 的依据
   if (typeof instance.shouldComponentUpdate === 'function') {
     startPhaseTimer(workInProgress, 'shouldComponentUpdate');
     const shouldUpdate = instance.shouldComponentUpdate(
@@ -270,12 +271,14 @@ function checkShouldComponentUpdate(
     return shouldUpdate;
   }
 
+  // 如果是 pureComponent 则只是浅比较
   if (ctor.prototype && ctor.prototype.isPureReactComponent) {
     return (
       !shallowEqual(oldProps, newProps) || !shallowEqual(oldState, newState)
     );
   }
 
+  // 如果不是以上两种情况则直接返回 true 表明需要更新
   return true;
 }
 
@@ -1005,7 +1008,10 @@ function resumeMountClassInstance(
   return shouldUpdate;
 }
 
-// Invokes the update life-cycles and returns false if it shouldn't rerender.
+/**
+ * 返回 false 则不需要重新渲染，当 props 更新时则调用 componentWillReceiveProps
+ * Invokes the update life-cycles and returns false if it shouldn't rerender.
+ */
 function updateClassInstance(
   current: Fiber,
   workInProgress: Fiber,
@@ -1073,7 +1079,7 @@ function updateClassInstance(
     newState = workInProgress.memoizedState;
   }
   // 判断是否不需要更新，如果不需要渲染，但是 state 或者 props 和之前的数据不同
-  // 还是会调用 componentDidUpdate 及 getSnapshotBeforeUpdate
+  // 则会打上标签，在 commitRoot 阶段先后调用 getSnapshotBeforeUpdate 和 componentDidUpdate 
   if (
     oldProps === newProps &&
     oldState === newState &&
@@ -1112,6 +1118,7 @@ function updateClassInstance(
   }
   // 执行 shouldComponentUpdate
   const shouldUpdate =
+    // 判断是否则 forceUpdate
     checkHasForceUpdateAfterProcessing() ||
     checkShouldComponentUpdate(
       workInProgress,

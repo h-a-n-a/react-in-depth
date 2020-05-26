@@ -32,7 +32,25 @@ if (__DEV__) {
   Object.freeze(emptyContextObject);
 }
 
+/**
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ * legacyContextProvider
+ */
+
+// 注释已经非常明确，就不再翻译
 // A cursor to the current merged context object on the stack.
+/**
+ * 记录当前组件和他的父树一起提供给子树的childContext对象，初始默认是emptyContextObject {}。
+ */
 let contextStackCursor: StackCursor<Object> = createCursor(emptyContextObject);
 // A cursor to a boolean indicating whether the context has changed.
 let didPerformWorkStackCursor: StackCursor<boolean> = createCursor(false);
@@ -116,6 +134,33 @@ function hasContextChanged(): boolean {
   return didPerformWorkStackCursor.current;
 }
 
+/**
+ * 当父级 class component 有一个名为 childContextType 的静态方法时，则说明为 legacyContextProvider
+ * 参考：https://www.jianshu.com/p/392125a76c6f
+ * // 在父组件中 定义上下文类型
+    static childContextType = {
+        users: PropTypes.array,
+        userMap: PropTypes.object
+    }
+
+    // 在父组件中 给context填充数据
+    getChildContext() {
+        return { // 返回context对象
+            users: this.getUsers(),
+            userMap: this.getUserMap()
+        }
+    }
+
+    // 在子组件中 告知我们要获取 context
+    static contextTypes = {
+        users: PropTypes.array
+    }
+
+    // 在子组件中 读取父级的 context 值
+    {this.context.users.xxxx}
+
+ * @param {ClassComponent} type class 组件
+ */
 function isContextProvider(type: Function): boolean {
   const childContextTypes = type.childContextTypes;
   return childContextTypes !== null && childContextTypes !== undefined;
@@ -131,6 +176,12 @@ function popTopLevelContextObject(fiber: Fiber): void {
   pop(contextStackCursor, fiber);
 }
 
+/**
+ * updateHostRoot中 hostRootContainer.pendingContext !== null 时会调用
+ * @param {*} fiber 
+ * @param {*} context 
+ * @param {*} didChange 
+ */
 function pushTopLevelContextObject(
   fiber: Fiber,
   context: Object,
@@ -146,6 +197,13 @@ function pushTopLevelContextObject(
   push(didPerformWorkStackCursor, didChange, fiber);
 }
 
+/**
+ * merge 父级和当前 context 
+ * @param {*} fiber 
+ * @param {*} type 
+ * @param {*} parentContext 
+ * @returns 返回 merge 完成的 context
+ */
 function processChildContext(
   fiber: Fiber,
   type: any,
@@ -212,18 +270,28 @@ function processChildContext(
   return {...parentContext, ...childContext};
 }
 
+/**
+ * 除了 HostContainer（调用的是这个 pushTopLevelContextObject 而不是 pushContextProvider） 以外只有 ClassComponent 能够提供 childContext，
+ * 在 updateClassComponent 的过程中会调用 pushContextProvider 来推入新的子树 context 对象。
+ * @param {*} workInProgress 
+ */
 function pushContextProvider(workInProgress: Fiber): boolean {
-  const instance = workInProgress.stateNode;
+  // 已经被 new 完的 class 组件实例
+  const instance = workInProgress.stateNode; 
   // We push the context as early as possible to ensure stack integrity.
   // If the instance does not exist yet, we will push null at first,
   // and replace it on the stack later when invalidating the context.
+  // 拿到父级和自己 context 的集合，但是在 updateClassComponent 调用这个方法的时候并没有计算出新的state，所以是否有新的context也是未知, 
+  // 在后续finishClassComponent的时候如果state或者props有更新，那么需要重新计算context，会执行invalidateContextProvider
   const memoizedMergedChildContext =
     (instance && instance.__reactInternalMemoizedMergedChildContext) ||
     emptyContextObject;
 
   // Remember the parent context so we can merge with it later.
   // Inherit the parent's did-perform-work value to avoid inadvertently blocking updates.
+  // 父树提供的 context 的集合（合并了所有父级）
   previousContext = contextStackCursor.current;
+  // 使得 contextStackCursor.current 指向父级和自身的 context merge 后的集合，然后子树就可以用 this.context 拿到父级了
   push(contextStackCursor, memoizedMergedChildContext, workInProgress);
   push(
     didPerformWorkStackCursor,
@@ -234,6 +302,13 @@ function pushContextProvider(workInProgress: Fiber): boolean {
   return true;
 }
 
+/**
+ * 如果 class component 不存在，则在 updateClassComponent 中会先执行 pushContextProvider 把当前一级的 context 设置为 null，
+ * 在后续 finishClassComponent 的时候如果 state 或者 props 有更新，那么需要重新计算 context，会执行 invalidateContextProvider
+ * @param {*} workInProgress 
+ * @param {*} type 
+ * @param {*} didChange 
+ */
 function invalidateContextProvider(
   workInProgress: Fiber,
   type: any,
@@ -250,13 +325,19 @@ function invalidateContextProvider(
     // Merge parent and own context.
     // Skip this if we're not updating due to sCU.
     // This avoids unnecessarily recomputing memoized values.
+
+    // 综合了父级和自身的 context 的集合
     const mergedContext = processChildContext(
       workInProgress,
       type,
       previousContext,
     );
+
+    // 将这一次的结果缓存下来，等到下一次 classComponent 更新的时候在 pushContenxtProvider 中就可以拿到缓存的值，减少运算
     instance.__reactInternalMemoizedMergedChildContext = mergedContext;
 
+
+    // 由于之前对于当前组件已经 push （pushContextProvider）过一次了，所以这里要先pop再push
     // Replace the old (or empty) context with the new one.
     // It is important to unwind the context in the reverse order.
     pop(didPerformWorkStackCursor, workInProgress);

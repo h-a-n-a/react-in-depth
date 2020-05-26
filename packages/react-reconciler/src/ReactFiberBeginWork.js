@@ -676,8 +676,12 @@ function updateClassComponent(
   // During mounting we don't know the child context yet as the instance doesn't exist.
   // We will invalidate the child context in finishClassComponent() right after rendering.
   let hasContext;
+
+  // 如果是 legacy contextProvider 则设置为 hasContext 为 true
+  // legacy contextProvider: https://www.jianshu.com/p/392125a76c6f
   if (isLegacyContextProvider(Component)) {
     hasContext = true;
+    // 在这段代码的后续 finishClassComponent 中会也调用 invalidateContextProvider 完成 context 的更新（因为 state 和 props 可能会有更新）
     pushLegacyContextProvider(workInProgress);
   } else {
     hasContext = false;
@@ -713,7 +717,7 @@ function updateClassComponent(
       renderExpirationTime,
     );
     shouldUpdate = true;
-  } else if (current === null) {
+  } else if (current === null) { // instance !== null
     // In a resume, we'll already have an instance we can reuse.
     shouldUpdate = resumeMountClassInstance(
       workInProgress,
@@ -722,7 +726,7 @@ function updateClassComponent(
       renderExpirationTime,
     );
   } else {
-    // 更新组件
+    // 更新组件，并返回是否需要重新渲染的 flag
     shouldUpdate = updateClassInstance(
       current,
       workInProgress,
@@ -731,11 +735,12 @@ function updateClassComponent(
       renderExpirationTime,
     );
   }
+  // 更新 legacy contextProvider
   const nextUnitOfWork = finishClassComponent(
     current,
     workInProgress,
     Component,
-    shouldUpdate,
+    shouldUpdate, // 是否重新渲染
     hasContext,
     renderExpirationTime,
   );
@@ -758,7 +763,7 @@ function finishClassComponent(
   current: Fiber | null,
   workInProgress: Fiber,
   Component: any,
-  shouldUpdate: boolean,
+  shouldUpdate: boolean, // 是否重新渲染
   hasContext: boolean,
   renderExpirationTime: ExpirationTime,
 ) {
@@ -768,10 +773,12 @@ function finishClassComponent(
 
   const didCaptureError = (workInProgress.effectTag & DidCapture) !== NoEffect;
 
+  // shouldComponentUpdate 为 false，则 invalidateContextProvider 的 didChange 为 false
   if (!shouldUpdate && !didCaptureError) {
     // Context providers should defer to sCU for rendering
+    // 如果 class component 是一个 legacy context provider，参考：https://www.jianshu.com/p/392125a76c6f
     if (hasContext) {
-      invalidateContextProvider(workInProgress, Component, false);
+      invalidateContextProvider(workInProgress, Component, false /* didChange */);
     }
 
     return bailoutOnAlreadyFinishedWork(
@@ -780,6 +787,8 @@ function finishClassComponent(
       renderExpirationTime,
     );
   }
+
+  // 如果 shouldComponentUpdate 返回 true 或 没有 shouldComponentUpdate
 
   const instance = workInProgress.stateNode;
 
@@ -845,6 +854,7 @@ function finishClassComponent(
   workInProgress.memoizedState = instance.state;
 
   // The context might have changed so we need to recalculate it.
+  // 更新了 state、props 需要重新更新 legacyContextProvider
   if (hasContext) {
     invalidateContextProvider(workInProgress, Component, true);
   }
@@ -853,12 +863,13 @@ function finishClassComponent(
 }
 
 function pushHostRootContext(workInProgress) {
+  // fiber Root container
   const root = (workInProgress.stateNode: FiberRoot);
   if (root.pendingContext) {
     pushTopLevelContextObject(
       workInProgress,
       root.pendingContext,
-      root.pendingContext !== root.context,
+      root.pendingContext !== root.context, /* didChange */
     );
   } else if (root.context) {
     // Should always be set
